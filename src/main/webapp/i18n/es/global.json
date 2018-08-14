@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "IAPPReclamos",
+        "title": "Sistema de Reclamos",
         "browsehappy": "Está usando un navegador <strong>no actualizado</strong>. Por favor, <a href=\"http://browsehappy.com/?locale=en\">actualice su navegador</a> para mejorar su experiencia.",
         "menu": {
             "home": "Inicio",
@@ -131,5 +131,5 @@
         "idexists": "A new {{entityName}} cannot already have an ID",
         "idnull": "Invalid ID"
     },
-    "footer": "pie de página"
+    "footer": "Sistema de Reclamos. Grupo 2 - Integracion de Aplicaciones"
 }
