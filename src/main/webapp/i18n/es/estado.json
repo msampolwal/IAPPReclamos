@@ -1,0 +1,10 @@
+{
+    "iappReclamosApp": {
+        "Estado" : {
+            "null": "",
+            "PENDIENTE": "PENDIENTE",
+            "PENDIENTE_LOGISTICA": "PENDIENTE_LOGISTICA",
+            "FINALIZADO": "FINALIZADO"
+        }
+    }
+}

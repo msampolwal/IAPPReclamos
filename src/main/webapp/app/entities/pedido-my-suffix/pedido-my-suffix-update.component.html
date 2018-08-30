@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-pedido-my-suffix-heading" jhiTranslate="iappReclamosApp.pedido.home.createOrEditLabel">Create or edit a Pedido</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!pedido.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="pedido.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.fechaEntrega" for="field_fechaEntrega">Fecha Entrega</label>
+                    <div class="input-group">
+                        <input id="field_fechaEntrega" type="text" class="form-control" name="fechaEntrega" ngbDatepicker  #fechaEntregaDp="ngbDatepicker" [(ngModel)]="pedido.fechaEntrega"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="fechaEntregaDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.montoCompra" for="field_montoCompra">Monto Compra</label>
+                    <input type="number" class="form-control" name="montoCompra" id="field_montoCompra"
+                        [(ngModel)]="pedido.montoCompra" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.dniCliente" for="field_dniCliente">Dni Cliente</label>
+                    <input type="text" class="form-control" name="dniCliente" id="field_dniCliente"
+                        [(ngModel)]="pedido.dniCliente" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.nombreCliente" for="field_nombreCliente">Nombre Cliente</label>
+                    <input type="text" class="form-control" name="nombreCliente" id="field_nombreCliente"
+                        [(ngModel)]="pedido.nombreCliente" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.mailCliente" for="field_mailCliente">Mail Cliente</label>
+                    <input type="text" class="form-control" name="mailCliente" id="field_mailCliente"
+                        [(ngModel)]="pedido.mailCliente" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.idProducto" for="field_idProducto">Id Producto</label>
+                    <input type="text" class="form-control" name="idProducto" id="field_idProducto"
+                        [(ngModel)]="pedido.idProducto" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.descripcionProducto" for="field_descripcionProducto">Descripcion Producto</label>
+                    <input type="text" class="form-control" name="descripcionProducto" id="field_descripcionProducto"
+                        [(ngModel)]="pedido.descripcionProducto" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.tienda" for="field_tienda">Tienda</label>
+                    <select class="form-control" id="field_tienda" name="tienda" [(ngModel)]="pedido.tiendaId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tiendaOption.id" *ngFor="let tiendaOption of tiendas; trackBy: trackTiendaById">{{tiendaOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

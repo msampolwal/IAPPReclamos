@@ -1,0 +1,43 @@
+{
+    "name": "Reclamo",
+    "fields": [
+        {
+            "fieldName": "observacion",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "estado",
+            "fieldType": "Estado",
+            "fieldValues": "PENDIENTE,PENDIENTE_LOGISTICA,FINALIZADO"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "pedido",
+            "otherEntityName": "pedido",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "reclamo"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "tipo",
+            "otherEntityName": "tipoReclamo",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180830182135",
+    "entityTableName": "reclamo",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "angularJSSuffix": "mySuffix"
+}

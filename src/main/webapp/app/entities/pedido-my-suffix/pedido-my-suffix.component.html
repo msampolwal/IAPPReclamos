@@ -1,0 +1,92 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="iappReclamosApp.pedido.home.title">Pedidos</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-pedido-my-suffix" [routerLink]="['/pedido-my-suffix/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="iappReclamosApp.pedido.home.createLabel">
+            Create new Pedido
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="pedidos">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="fechaEntrega"><span jhiTranslate="iappReclamosApp.pedido.fechaEntrega">Fecha Entrega</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="montoCompra"><span jhiTranslate="iappReclamosApp.pedido.montoCompra">Monto Compra</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dniCliente"><span jhiTranslate="iappReclamosApp.pedido.dniCliente">Dni Cliente</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="nombreCliente"><span jhiTranslate="iappReclamosApp.pedido.nombreCliente">Nombre Cliente</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mailCliente"><span jhiTranslate="iappReclamosApp.pedido.mailCliente">Mail Cliente</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="idProducto"><span jhiTranslate="iappReclamosApp.pedido.idProducto">Id Producto</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="descripcionProducto"><span jhiTranslate="iappReclamosApp.pedido.descripcionProducto">Descripcion Producto</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="tiendaId"><span jhiTranslate="iappReclamosApp.pedido.tienda">Tienda</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="reclamoId"><span jhiTranslate="iappReclamosApp.pedido.reclamo">Reclamo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let pedido of pedidos ;trackBy: trackId">
+                <td><a [routerLink]="['/pedido-my-suffix', pedido.id, 'view' ]">{{pedido.id}}</a></td>
+                <td>{{pedido.fechaEntrega | date:'mediumDate'}}</td>
+                <td>{{pedido.montoCompra}}</td>
+                <td>{{pedido.dniCliente}}</td>
+                <td>{{pedido.nombreCliente}}</td>
+                <td>{{pedido.mailCliente}}</td>
+                <td>{{pedido.idProducto}}</td>
+                <td>{{pedido.descripcionProducto}}</td>
+                <td>
+                    <div *ngIf="pedido.tiendaId">
+                        <a [routerLink]="['../tienda-my-suffix', pedido.tiendaId , 'view' ]" >{{pedido.tiendaId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="pedido.reclamoId">
+                        <a [routerLink]="['../reclamo-my-suffix', pedido.reclamoId , 'view' ]" >{{pedido.reclamoId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/pedido-my-suffix', pedido.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+<!--                         <button type="submit" -->
+<!--                                 [routerLink]="['/pedido-my-suffix', pedido.id, 'edit']" -->
+<!--                                 class="btn btn-primary btn-sm"> -->
+<!--                             <fa-icon [icon]="'pencil-alt'"></fa-icon> -->
+<!--                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span> -->
+<!--                         </button> -->
+                        <button type="submit" *ngIf="!pedido.reclamoId"
+                                [routerLink]="['/pedido-my-suffix', pedido.id, 'reclamo' ]"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Reclamar</span>
+                        </button>
+<!--                         <button type="submit" -->
+<!--                                 [routerLink]="['/', { outlets: { popup: 'pedido-my-suffix/'+ pedido.id + '/delete'} }]" -->
+<!--                                 replaceUrl="true" -->
+<!--                                 queryParamsHandling="merge" -->
+<!--                                 class="btn btn-danger btn-sm"> -->
+<!--                             <fa-icon [icon]="'times'"></fa-icon> -->
+<!--                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span> -->
+<!--                         </button> -->
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="pedidos && pedidos.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

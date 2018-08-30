@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-reclamo-my-suffix-heading" jhiTranslate="iappReclamosApp.reclamo.home.createOrEditLabel">Create or edit a Reclamo</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!reclamo.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="reclamo.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.reclamo.observacion" for="field_observacion">Observacion</label>
+                    <input type="text" class="form-control" name="observacion" id="field_observacion"
+                        [(ngModel)]="reclamo.observacion" required/>
+                    <div [hidden]="!(editForm.controls.observacion?.dirty && editForm.controls.observacion?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.observacion?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.reclamo.estado" for="field_estado">Estado</label>
+                    <select class="form-control" name="estado" [(ngModel)]="reclamo.estado" id="field_estado" >
+                        <option value="PENDIENTE">{{'iappReclamosApp.Estado.PENDIENTE' | translate}}</option>
+                        <option value="PENDIENTE_LOGISTICA">{{'iappReclamosApp.Estado.PENDIENTE_LOGISTICA' | translate}}</option>
+                        <option value="FINALIZADO">{{'iappReclamosApp.Estado.FINALIZADO' | translate}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.reclamo.pedido" for="field_pedido">Pedido</label>
+                    <select class="form-control" id="field_pedido" name="pedido" [(ngModel)]="reclamo.pedidoId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="pedidoOption.id" *ngFor="let pedidoOption of pedidos; trackBy: trackPedidoById">{{pedidoOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.reclamo.tipo" for="field_tipo">Tipo</label>
+                    <select class="form-control" id="field_tipo" name="tipo" [(ngModel)]="reclamo.tipoId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tipoReclamoOption.id" *ngFor="let tipoReclamoOption of tiporeclamos; trackBy: trackTipoReclamoById">{{tipoReclamoOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tienda">
+            <h2><span jhiTranslate="iappReclamosApp.tienda.detail.title">Tienda</span> {{tienda.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="iappReclamosApp.tienda.nombre">Nombre</span></dt>
+                <dd>
+                    <span>{{tienda.nombre}}</span>
+                </dd>
+                <dt><span jhiTranslate="iappReclamosApp.tienda.url">Url</span></dt>
+                <dd>
+                    <span>{{tienda.url}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tienda-my-suffix', tienda.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

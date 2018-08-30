@@ -1,0 +1,25 @@
+
+{
+    "iappReclamosApp": {
+        "reclamo" : {
+            "home": {
+                "title": "Reclamos",
+                "createLabel": "Crear nuevo Reclamo",
+                "createOrEditLabel": "Crear o editar Reclamo"
+            },
+            "created": "Un nuevo Reclamo ha sido creado con el identificador {{ param }}",
+            "updated": "Un Reclamo ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Reclamo ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Reclamo {{ id }}?"
+            },
+            "detail": {
+                "title": "Reclamo"
+            },
+            "observacion": "Observacion",
+            "estado": "Estado",
+            "pedido": "Pedido",
+            "tipo": "Tipo"
+        }
+    }
+}

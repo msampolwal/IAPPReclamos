@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="reclamo">
+            <h2><span jhiTranslate="iappReclamosApp.reclamo.detail.title">Reclamo</span> {{reclamo.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="iappReclamosApp.reclamo.observacion">Observacion</span></dt>
+                <dd>
+                    <span>{{reclamo.observacion}}</span>
+                </dd>
+                <dt><span jhiTranslate="iappReclamosApp.reclamo.estado">Estado</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'iappReclamosApp.Estado.' + reclamo.estado}}">{{reclamo.estado}}</span>
+                </dd>
+                <dt><span jhiTranslate="iappReclamosApp.reclamo.pedido">Pedido</span></dt>
+                <dd>
+                    <div *ngIf="reclamo.pedidoId">
+                        <a [routerLink]="['/pedido-my-suffix', reclamo.pedidoId, 'view']">{{reclamo.pedidoId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="iappReclamosApp.reclamo.tipo">Tipo</span></dt>
+                <dd>
+                    <div *ngIf="reclamo.tipoId">
+                        <a [routerLink]="['/tipo-reclamo-my-suffix', reclamo.tipoId, 'view']">{{reclamo.tipoId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/reclamo-my-suffix', reclamo.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

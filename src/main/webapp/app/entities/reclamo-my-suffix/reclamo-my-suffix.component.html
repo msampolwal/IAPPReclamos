@@ -1,0 +1,76 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="iappReclamosApp.reclamo.home.title">Reclamos</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-reclamo-my-suffix" [routerLink]="['/reclamo-my-suffix/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="iappReclamosApp.reclamo.home.createLabel">
+            Create new Reclamo
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="reclamos">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="observacion"><span jhiTranslate="iappReclamosApp.reclamo.observacion">Observacion</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="estado"><span jhiTranslate="iappReclamosApp.reclamo.estado">Estado</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="pedidoId"><span jhiTranslate="iappReclamosApp.reclamo.pedido">Pedido</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="tipoId"><span jhiTranslate="iappReclamosApp.reclamo.tipo">Tipo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let reclamo of reclamos ;trackBy: trackId">
+                <td><a [routerLink]="['/reclamo-my-suffix', reclamo.id, 'view' ]">{{reclamo.id}}</a></td>
+                <td>{{reclamo.observacion}}</td>
+                <td jhiTranslate="{{'iappReclamosApp.Estado.' + reclamo.estado}}">{{reclamo.estado}}</td>
+                <td>
+                    <div *ngIf="reclamo.pedidoId">
+                        <a [routerLink]="['../pedido-my-suffix', reclamo.pedidoId , 'view' ]" >{{reclamo.pedidoId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="reclamo.tipoId">
+                        <a [routerLink]="['../tipo-reclamo-my-suffix', reclamo.tipoId , 'view' ]" >{{reclamo.tipoId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/reclamo-my-suffix', reclamo.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/reclamo-my-suffix', reclamo.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'reclamo-my-suffix/'+ reclamo.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="reclamos && reclamos.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

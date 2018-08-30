@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-tipo-reclamo-my-suffix-heading" jhiTranslate="iappReclamosApp.tipoReclamo.home.createOrEditLabel">Create or edit a Tipo Reclamo</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!tipoReclamo.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="tipoReclamo.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.tipoReclamo.descripcion" for="field_descripcion">Descripcion</label>
+                    <input type="text" class="form-control" name="descripcion" id="field_descripcion"
+                        [(ngModel)]="tipoReclamo.descripcion" required/>
+                    <div [hidden]="!(editForm.controls.descripcion?.dirty && editForm.controls.descripcion?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.descripcion?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.tipoReclamo.notificaALogistica" for="field_notificaALogistica">Notifica A Logistica</label>
+                    <input type="checkbox" class="form-control" name="notificaALogistica" id="field_notificaALogistica"
+                        [(ngModel)]="tipoReclamo.notificaALogistica" />
+                    <div [hidden]="!(editForm.controls.notificaALogistica?.dirty && editForm.controls.notificaALogistica?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.notificaALogistica?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="iappReclamosApp.tipoReclamo.notificaATienda" for="field_notificaATienda">Notifica A Tienda</label>
+                    <input type="checkbox" class="form-control" name="notificaATienda" id="field_notificaATienda"
+                        [(ngModel)]="tipoReclamo.notificaATienda" />
+                    <div [hidden]="!(editForm.controls.notificaATienda?.dirty && editForm.controls.notificaATienda?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.notificaATienda?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

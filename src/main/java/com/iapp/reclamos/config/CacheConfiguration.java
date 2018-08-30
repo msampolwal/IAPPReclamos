@@ -40,6 +40,10 @@ public class CacheConfiguration {
             cm.createCache(com.iapp.reclamos.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             cm.createCache(com.iapp.reclamos.domain.PersistentToken.class.getName(), jcacheConfiguration);
             cm.createCache(com.iapp.reclamos.domain.User.class.getName() + ".persistentTokens", jcacheConfiguration);
+            cm.createCache(com.iapp.reclamos.domain.Reclamo.class.getName(), jcacheConfiguration);
+            cm.createCache(com.iapp.reclamos.domain.Pedido.class.getName(), jcacheConfiguration);
+            cm.createCache(com.iapp.reclamos.domain.Tienda.class.getName(), jcacheConfiguration);
+            cm.createCache(com.iapp.reclamos.domain.TipoReclamo.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

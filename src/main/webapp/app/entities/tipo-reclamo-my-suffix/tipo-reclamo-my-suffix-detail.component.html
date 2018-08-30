@@ -1,0 +1,35 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tipoReclamo">
+            <h2><span jhiTranslate="iappReclamosApp.tipoReclamo.detail.title">Tipo Reclamo</span> {{tipoReclamo.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="iappReclamosApp.tipoReclamo.descripcion">Descripcion</span></dt>
+                <dd>
+                    <span>{{tipoReclamo.descripcion}}</span>
+                </dd>
+                <dt><span jhiTranslate="iappReclamosApp.tipoReclamo.notificaALogistica">Notifica A Logistica</span></dt>
+                <dd>
+                    <span>{{tipoReclamo.notificaALogistica}}</span>
+                </dd>
+                <dt><span jhiTranslate="iappReclamosApp.tipoReclamo.notificaATienda">Notifica A Tienda</span></dt>
+                <dd>
+                    <span>{{tipoReclamo.notificaATienda}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tipo-reclamo-my-suffix', tipoReclamo.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
