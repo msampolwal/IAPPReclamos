@@ -11,6 +11,7 @@ import { ReclamoMySuffixComponent } from './reclamo-my-suffix.component';
 import { ReclamoMySuffixDetailComponent } from './reclamo-my-suffix-detail.component';
 import { ReclamoMySuffixUpdateComponent } from './reclamo-my-suffix-update.component';
 import { ReclamoMySuffixDeletePopupComponent } from './reclamo-my-suffix-delete-dialog.component';
+import { ReclamoMySuffixFinalizarPopupComponent } from './reclamo-my-suffix-finalizar-dialog.component';
 import { IReclamoMySuffix } from 'app/shared/model/reclamo-my-suffix.model';
 
 @Injectable({ providedIn: 'root' })
@@ -82,6 +83,19 @@ export const reclamoPopupRoute: Routes = [
     {
         path: 'reclamo-my-suffix/:id/delete',
         component: ReclamoMySuffixDeletePopupComponent,
+        resolve: {
+            reclamo: ReclamoMySuffixResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'iappReclamosApp.reclamo.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
+        path: 'reclamo-my-suffix/:id/finalizar',
+        component: ReclamoMySuffixFinalizarPopupComponent,
         resolve: {
             reclamo: ReclamoMySuffixResolve
         },

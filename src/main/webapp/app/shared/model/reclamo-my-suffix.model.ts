@@ -9,6 +9,7 @@ export interface IReclamoMySuffix {
     observacion?: string;
     estado?: Estado;
     pedidoId?: number;
+    tipoNombre?: string;
     tipoId?: number;
     notificaLogistica?: boolean;
 }
@@ -19,6 +20,7 @@ export class ReclamoMySuffix implements IReclamoMySuffix {
         public observacion?: string,
         public estado?: Estado,
         public pedidoId?: number,
+        public tipoNombre?: string,
         public tipoId?: number,
         public notificaLogistica?: boolean
     ) {}

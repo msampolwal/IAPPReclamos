@@ -25,7 +25,7 @@
             <tr *ngFor="let tipoReclamo of tipoReclamos ;trackBy: trackId">
                 <td><a [routerLink]="['/tipo-reclamo-my-suffix', tipoReclamo.id, 'view' ]">{{tipoReclamo.id}}</a></td>
                 <td>{{tipoReclamo.descripcion}}</td>
-                <td>{{tipoReclamo.notificaALogistica}}</td>
+                <td>{{tipoReclamo.notificaLogistica}}</td>
                 <td>{{tipoReclamo.notificaATienda}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

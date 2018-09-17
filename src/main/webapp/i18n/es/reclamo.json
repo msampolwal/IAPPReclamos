@@ -10,6 +10,7 @@
             "created": "Un nuevo Reclamo ha sido creado con el identificador {{ param }}",
             "updated": "Un Reclamo ha sido actualizado con el identificador {{ param }}",
             "deleted": "Un Reclamo ha sido eliminado con el identificador {{ param }}",
+            "finalizado": "Un Reclamo ha sido finalizado con el identificador {{ param }}",
             "delete": {
                 "question": "¿Seguro que quiere eliminar Reclamo {{ id }}?"
             },

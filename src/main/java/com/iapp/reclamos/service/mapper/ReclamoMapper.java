@@ -14,6 +14,7 @@ public interface ReclamoMapper extends EntityMapper<ReclamoDTO, Reclamo> {
     @Mapping(source = "pedido.id", target = "pedidoId")
     @Mapping(source = "tipo.id", target = "tipoId")
     @Mapping(source = "tipo.notificaALogistica", target = "notificaLogistica")
+    @Mapping(source = "tipo.descripcion", target = "tipoNombre")
     ReclamoDTO toDto(Reclamo reclamo);
 
     @Mapping(source = "pedidoId", target = "pedido")

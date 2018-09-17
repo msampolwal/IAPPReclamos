@@ -1,7 +1,7 @@
 package com.iapp.reclamos.service.dto;
 
-import java.time.LocalDate;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -24,6 +24,8 @@ public class PedidoDTO implements Serializable {
     private String idProducto;
 
     private String descripcionProducto;
+    
+    private String nombreTienda;
 
     private Long tiendaId;
     
@@ -93,7 +95,15 @@ public class PedidoDTO implements Serializable {
         this.descripcionProducto = descripcionProducto;
     }
 
-    public Long getTiendaId() {
+    public String getNombreTienda() {
+		return nombreTienda;
+	}
+
+	public void setNombreTienda(String nombreTienda) {
+		this.nombreTienda = nombreTienda;
+	}
+
+	public Long getTiendaId() {
         return tiendaId;
     }
 

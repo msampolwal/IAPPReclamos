@@ -35,4 +35,8 @@ export class ReclamoMySuffixService {
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
+
+    finalizar(id: number): Observable<HttpResponse<any>> {
+        return this.http.get<any>(`${this.resourceUrl}/finalizar/${id}`, { observe: 'response' });
+    }
 }

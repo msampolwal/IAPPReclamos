@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="pedido">
-            <h2><span jhiTranslate="iappReclamosApp.pedido.detail.title">Pedido</span> {{pedido.id}}</h2>
+            <h2><span jhiTranslate="iappReclamosApp.pedido.detail.title">Pedido</span></h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
@@ -36,13 +36,13 @@
                 <dt><span jhiTranslate="iappReclamosApp.pedido.tienda">Tienda</span></dt>
                 <dd>
                     <div *ngIf="pedido.tiendaId">
-                        <a [routerLink]="['/tienda-my-suffix', pedido.tiendaId, 'view']">{{pedido.tiendaId}}</a>
+                        <a [routerLink]="['/tienda-my-suffix', pedido.tiendaId, 'view']">{{pedido.nombreTienda}}</a>
                     </div>
                 </dd>
             </dl>
 
 			<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 id="jhi-reclamo-my-suffix-heading" jhiTranslate="iappReclamosApp.reclamo.home.createOrEditLabel">Create or edit a Reclamo</h2>
+            <h2 id="jhi-reclamo-my-suffix-heading">Datos Reclamo</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!reclamo.id">

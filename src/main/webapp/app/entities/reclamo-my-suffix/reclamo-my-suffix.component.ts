@@ -48,6 +48,17 @@ export class ReclamoMySuffixComponent implements OnInit, OnDestroy {
         });
     }
 
+    finalizar(idPedido: number) {
+        if (idPedido !== null) {
+            this.reclamoService.finalizar(idPedido).subscribe(response => {
+                this.eventManager.broadcast({
+                    name: 'reclamoListModification',
+                    content: 'Deleted an reclamo'
+                });
+            });
+        }
+    }
+
     loadAll() {
         this.reclamoService
             .query({

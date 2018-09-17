@@ -9,6 +9,7 @@ export interface IPedidoMySuffix {
     mailCliente?: string;
     idProducto?: string;
     descripcionProducto?: string;
+    nombreTienda?: string;
     tiendaId?: number;
     reclamoId?: number;
 }
@@ -23,6 +24,7 @@ export class PedidoMySuffix implements IPedidoMySuffix {
         public mailCliente?: string,
         public idProducto?: string,
         public descripcionProducto?: string,
+        public nombreTienda?: string,
         public tiendaId?: number,
         public reclamoId?: number
     ) {}

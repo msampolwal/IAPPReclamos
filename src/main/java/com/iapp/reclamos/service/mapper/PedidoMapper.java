@@ -13,6 +13,7 @@ public interface PedidoMapper extends EntityMapper<PedidoDTO, Pedido> {
 
     @Mapping(source = "tienda.id", target = "tiendaId")
     @Mapping(source = "reclamo.id", target = "reclamoId")
+    @Mapping(source = "tienda.nombre", target = "nombreTienda")
     PedidoDTO toDto(Pedido pedido);
 
     @Mapping(source = "tiendaId", target = "tienda")

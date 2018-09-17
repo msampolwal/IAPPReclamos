@@ -10,6 +10,26 @@
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
+    
+    <form name="editForm" role="form" novalidate (ngSubmit)="loadAll()" #editForm="ngForm">
+    		<div class="form-row">
+    			<div class="form-group col-md-6">
+         		<label class="form-control-label" for="field_idPedido">Id Pedido</label>
+            		<input type="text" class="form-control" name="idPedido" id="field_idPedido"
+            			[(ngModel)]="criteriaFilter.idPedido"/>
+         	</div>
+         	<div class="form-group col-md-6">
+	         	<label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.dniCliente" for="field_dniCliente">Dni Cliente</label>
+	            <input type="text" class="form-control" name="dniCliente" id="field_dniCliente"
+	            		[(ngModel)]="criteriaFilter.dniCliente"/>
+	       	</div>
+        	</div>
+         <button type="submit" id="find-entity" class="btn btn-primary">
+             <span>Buscar</span>
+         </button>
+    </form>
+    <br/>
+    
     <div class="table-responsive" *ngIf="pedidos">
         <table class="table table-striped">
             <thead>
@@ -39,7 +59,7 @@
                 <td>{{pedido.descripcionProducto}}</td>
                 <td>
                     <div *ngIf="pedido.tiendaId">
-                        <a [routerLink]="['../tienda-my-suffix', pedido.tiendaId , 'view' ]" >{{pedido.tiendaId}}</a>
+                        <a [routerLink]="['../tienda-my-suffix', pedido.tiendaId , 'view' ]" >{{pedido.nombreTienda}}</a>
                     </div>
                 </td>
                 <td>

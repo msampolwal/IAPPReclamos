@@ -32,7 +32,8 @@ export const pedidoRoute: Routes = [
         path: 'pedido-my-suffix',
         component: PedidoMySuffixComponent,
         resolve: {
-            pagingParams: JhiResolvePagingParams
+            pagingParams: JhiResolvePagingParams,
+            pedido: PedidoMySuffixResolve
         },
         data: {
             authorities: ['ROLE_USER'],

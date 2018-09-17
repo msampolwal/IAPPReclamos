@@ -146,4 +146,23 @@ public class ReclamoResource {
         reclamoService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    /**
+     * DELETE  /reclamos/finalizar/:id : finalizar the "id" reclamo.
+     *
+     * @param id the id of the reclamoDTO to finalizar
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @GetMapping("/reclamos/finalizar/{id}")
+    @Timed
+    public ResponseEntity<Void> finalizarReclamo(@PathVariable Long id) {
+        log.debug("REST request to finalizar Reclamo : {}", id);
+        Optional<ReclamoDTO> reclamoDTO = reclamoService.findOne(id);
+        if (reclamoDTO.isPresent()) {
+        		ReclamoDTO dto = reclamoDTO.get();
+        		dto.setEstado(Estado.FINALIZADO);
+        		reclamoService.save(dto);
+        }
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityFinalizadoAlert(ENTITY_NAME, id.toString())).build();
+    }
 }

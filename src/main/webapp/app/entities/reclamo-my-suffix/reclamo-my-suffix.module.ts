@@ -8,6 +8,8 @@ import {
     ReclamoMySuffixUpdateComponent,
     ReclamoMySuffixDeletePopupComponent,
     ReclamoMySuffixDeleteDialogComponent,
+    ReclamoMySuffixFinalizarPopupComponent,
+    ReclamoMySuffixFinalizarDialogComponent,
     reclamoRoute,
     reclamoPopupRoute
 } from './';
@@ -21,13 +23,17 @@ const ENTITY_STATES = [...reclamoRoute, ...reclamoPopupRoute];
         ReclamoMySuffixDetailComponent,
         ReclamoMySuffixUpdateComponent,
         ReclamoMySuffixDeleteDialogComponent,
-        ReclamoMySuffixDeletePopupComponent
+        ReclamoMySuffixDeletePopupComponent,
+        ReclamoMySuffixFinalizarDialogComponent,
+        ReclamoMySuffixFinalizarPopupComponent
     ],
     entryComponents: [
         ReclamoMySuffixComponent,
         ReclamoMySuffixUpdateComponent,
         ReclamoMySuffixDeleteDialogComponent,
-        ReclamoMySuffixDeletePopupComponent
+        ReclamoMySuffixDeletePopupComponent,
+        ReclamoMySuffixFinalizarDialogComponent,
+        ReclamoMySuffixFinalizarPopupComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

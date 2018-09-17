@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { IPedidoMySuffix } from 'app/shared/model/pedido-my-suffix.model';
+import { PedidoMySuffix } from 'app/shared/model/pedido-my-suffix.model';
 import { Principal } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
@@ -29,6 +30,7 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    criteriaFilter: any;
 
     constructor(
         private pedidoService: PedidoMySuffixService,
@@ -46,14 +48,35 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
         });
+        this.criteriaFilter = {
+            dniCliente: null,
+            idPedido: null,
+            areSet() {
+                return this.dniCliente != null || this.idPedido != null;
+            },
+            clear() {
+                this.dniCliente = null;
+                this.idPedido = null;
+            }
+        };
     }
 
     loadAll() {
+        const criteria = [];
+        if (this.criteriaFilter.areSet()) {
+            if (this.criteriaFilter.dniCliente != null && this.criteriaFilter.dniCliente !== '') {
+                criteria.push({ key: 'dniCliente.equals', value: this.criteriaFilter.dniCliente });
+            }
+            if (this.criteriaFilter.idPedido != null && this.criteriaFilter.idPedido !== '') {
+                criteria.push({ key: 'id.equals', value: this.criteriaFilter.idPedido });
+            }
+        }
         this.pedidoService
             .query({
                 page: this.page - 1,
                 size: this.itemsPerPage,
-                sort: this.sort()
+                sort: this.sort(),
+                criteria
             })
             .subscribe(
                 (res: HttpResponse<IPedidoMySuffix[]>) => this.paginatePedidos(res.body, res.headers),

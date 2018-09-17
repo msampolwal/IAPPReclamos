@@ -19,6 +19,8 @@ public class ReclamoDTO implements Serializable {
 
     private Long pedidoId;
 
+    private String tipoNombre;
+    
     private Long tipoId;
     
     private Boolean notificaLogistica;
@@ -55,7 +57,15 @@ public class ReclamoDTO implements Serializable {
         this.pedidoId = pedidoId;
     }
 
-    public Long getTipoId() {
+    public String getTipoNombre() {
+		return tipoNombre;
+	}
+
+	public void setTipoNombre(String tipoNombre) {
+		this.tipoNombre = tipoNombre;
+	}
+
+	public Long getTipoId() {
         return tipoId;
     }
 

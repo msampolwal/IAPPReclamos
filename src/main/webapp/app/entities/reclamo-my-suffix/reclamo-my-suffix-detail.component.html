@@ -22,7 +22,7 @@
                 <dt><span jhiTranslate="iappReclamosApp.reclamo.tipo">Tipo</span></dt>
                 <dd>
                     <div *ngIf="reclamo.tipoId">
-                        <a [routerLink]="['/tipo-reclamo-my-suffix', reclamo.tipoId, 'view']">{{reclamo.tipoId}}</a>
+                        <a [routerLink]="['/tipo-reclamo-my-suffix', reclamo.tipoId, 'view']">{{reclamo.tipoNombre}}</a>
                     </div>
                 </dd>
             </dl>
