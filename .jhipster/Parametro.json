@@ -4,34 +4,25 @@
     "relationships": [],
     "fields": [
         {
-            "fieldName": "nombre",
+            "fieldName": "clave",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "url",
+            "fieldName": "valor",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
-        },
-        {
-            "fieldName": "nombreLogistica",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "urlLogistica",
-            "fieldType": "String"
         }
     ],
-    "changelogDate": "20180830182137",
+    "changelogDate": "20180917200316",
     "dto": "mapstruct",
     "searchEngine": false,
     "service": "serviceImpl",
-    "entityTableName": "tienda",
+    "entityTableName": "parametro",
     "jpaMetamodelFiltering": true,
-    "pagination": "pagination",
-    "angularJSSuffix": "mySuffix"
+    "pagination": "pagination"
 }

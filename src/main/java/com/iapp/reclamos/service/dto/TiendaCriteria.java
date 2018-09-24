@@ -32,6 +32,10 @@ public class TiendaCriteria implements Serializable {
 
     private StringFilter url;
 
+    private StringFilter nombreLogistica;
+
+    private StringFilter urlLogistica;
+
     public TiendaCriteria() {
     }
 
@@ -59,12 +63,30 @@ public class TiendaCriteria implements Serializable {
         this.url = url;
     }
 
+    public StringFilter getNombreLogistica() {
+        return nombreLogistica;
+    }
+
+    public void setNombreLogistica(StringFilter nombreLogistica) {
+        this.nombreLogistica = nombreLogistica;
+    }
+
+    public StringFilter getUrlLogistica() {
+        return urlLogistica;
+    }
+
+    public void setUrlLogistica(StringFilter urlLogistica) {
+        this.urlLogistica = urlLogistica;
+    }
+
     @Override
     public String toString() {
         return "TiendaCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (nombre != null ? "nombre=" + nombre + ", " : "") +
                 (url != null ? "url=" + url + ", " : "") +
+                (nombreLogistica != null ? "nombreLogistica=" + nombreLogistica + ", " : "") +
+                (urlLogistica != null ? "urlLogistica=" + urlLogistica + ", " : "") +
             "}";
     }
 

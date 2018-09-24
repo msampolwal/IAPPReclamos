@@ -44,6 +44,7 @@ public class CacheConfiguration {
             cm.createCache(com.iapp.reclamos.domain.Pedido.class.getName(), jcacheConfiguration);
             cm.createCache(com.iapp.reclamos.domain.Tienda.class.getName(), jcacheConfiguration);
             cm.createCache(com.iapp.reclamos.domain.TipoReclamo.class.getName(), jcacheConfiguration);
+            cm.createCache(com.iapp.reclamos.domain.Parametro.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -50,6 +50,12 @@ public class TiendaResourceIntTest {
     private static final String DEFAULT_URL = "AAAAAAAAAA";
     private static final String UPDATED_URL = "BBBBBBBBBB";
 
+    private static final String DEFAULT_NOMBRE_LOGISTICA = "AAAAAAAAAA";
+    private static final String UPDATED_NOMBRE_LOGISTICA = "BBBBBBBBBB";
+
+    private static final String DEFAULT_URL_LOGISTICA = "AAAAAAAAAA";
+    private static final String UPDATED_URL_LOGISTICA = "BBBBBBBBBB";
+
     @Autowired
     private TiendaRepository tiendaRepository;
 
@@ -100,7 +106,9 @@ public class TiendaResourceIntTest {
     public static Tienda createEntity(EntityManager em) {
         Tienda tienda = new Tienda()
             .nombre(DEFAULT_NOMBRE)
-            .url(DEFAULT_URL);
+            .url(DEFAULT_URL)
+            .nombreLogistica(DEFAULT_NOMBRE_LOGISTICA)
+            .urlLogistica(DEFAULT_URL_LOGISTICA);
         return tienda;
     }
 
@@ -127,6 +135,8 @@ public class TiendaResourceIntTest {
         Tienda testTienda = tiendaList.get(tiendaList.size() - 1);
         assertThat(testTienda.getNombre()).isEqualTo(DEFAULT_NOMBRE);
         assertThat(testTienda.getUrl()).isEqualTo(DEFAULT_URL);
+        assertThat(testTienda.getNombreLogistica()).isEqualTo(DEFAULT_NOMBRE_LOGISTICA);
+        assertThat(testTienda.getUrlLogistica()).isEqualTo(DEFAULT_URL_LOGISTICA);
     }
 
     @Test
@@ -199,7 +209,9 @@ public class TiendaResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tienda.getId().intValue())))
             .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE.toString())))
-            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())));
+            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())))
+            .andExpect(jsonPath("$.[*].nombreLogistica").value(hasItem(DEFAULT_NOMBRE_LOGISTICA.toString())))
+            .andExpect(jsonPath("$.[*].urlLogistica").value(hasItem(DEFAULT_URL_LOGISTICA.toString())));
     }
     
 
@@ -215,7 +227,9 @@ public class TiendaResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(tienda.getId().intValue()))
             .andExpect(jsonPath("$.nombre").value(DEFAULT_NOMBRE.toString()))
-            .andExpect(jsonPath("$.url").value(DEFAULT_URL.toString()));
+            .andExpect(jsonPath("$.url").value(DEFAULT_URL.toString()))
+            .andExpect(jsonPath("$.nombreLogistica").value(DEFAULT_NOMBRE_LOGISTICA.toString()))
+            .andExpect(jsonPath("$.urlLogistica").value(DEFAULT_URL_LOGISTICA.toString()));
     }
 
     @Test
@@ -295,6 +309,84 @@ public class TiendaResourceIntTest {
         // Get all the tiendaList where url is null
         defaultTiendaShouldNotBeFound("url.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllTiendasByNombreLogisticaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tiendaRepository.saveAndFlush(tienda);
+
+        // Get all the tiendaList where nombreLogistica equals to DEFAULT_NOMBRE_LOGISTICA
+        defaultTiendaShouldBeFound("nombreLogistica.equals=" + DEFAULT_NOMBRE_LOGISTICA);
+
+        // Get all the tiendaList where nombreLogistica equals to UPDATED_NOMBRE_LOGISTICA
+        defaultTiendaShouldNotBeFound("nombreLogistica.equals=" + UPDATED_NOMBRE_LOGISTICA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTiendasByNombreLogisticaIsInShouldWork() throws Exception {
+        // Initialize the database
+        tiendaRepository.saveAndFlush(tienda);
+
+        // Get all the tiendaList where nombreLogistica in DEFAULT_NOMBRE_LOGISTICA or UPDATED_NOMBRE_LOGISTICA
+        defaultTiendaShouldBeFound("nombreLogistica.in=" + DEFAULT_NOMBRE_LOGISTICA + "," + UPDATED_NOMBRE_LOGISTICA);
+
+        // Get all the tiendaList where nombreLogistica equals to UPDATED_NOMBRE_LOGISTICA
+        defaultTiendaShouldNotBeFound("nombreLogistica.in=" + UPDATED_NOMBRE_LOGISTICA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTiendasByNombreLogisticaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tiendaRepository.saveAndFlush(tienda);
+
+        // Get all the tiendaList where nombreLogistica is not null
+        defaultTiendaShouldBeFound("nombreLogistica.specified=true");
+
+        // Get all the tiendaList where nombreLogistica is null
+        defaultTiendaShouldNotBeFound("nombreLogistica.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTiendasByUrlLogisticaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tiendaRepository.saveAndFlush(tienda);
+
+        // Get all the tiendaList where urlLogistica equals to DEFAULT_URL_LOGISTICA
+        defaultTiendaShouldBeFound("urlLogistica.equals=" + DEFAULT_URL_LOGISTICA);
+
+        // Get all the tiendaList where urlLogistica equals to UPDATED_URL_LOGISTICA
+        defaultTiendaShouldNotBeFound("urlLogistica.equals=" + UPDATED_URL_LOGISTICA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTiendasByUrlLogisticaIsInShouldWork() throws Exception {
+        // Initialize the database
+        tiendaRepository.saveAndFlush(tienda);
+
+        // Get all the tiendaList where urlLogistica in DEFAULT_URL_LOGISTICA or UPDATED_URL_LOGISTICA
+        defaultTiendaShouldBeFound("urlLogistica.in=" + DEFAULT_URL_LOGISTICA + "," + UPDATED_URL_LOGISTICA);
+
+        // Get all the tiendaList where urlLogistica equals to UPDATED_URL_LOGISTICA
+        defaultTiendaShouldNotBeFound("urlLogistica.in=" + UPDATED_URL_LOGISTICA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTiendasByUrlLogisticaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tiendaRepository.saveAndFlush(tienda);
+
+        // Get all the tiendaList where urlLogistica is not null
+        defaultTiendaShouldBeFound("urlLogistica.specified=true");
+
+        // Get all the tiendaList where urlLogistica is null
+        defaultTiendaShouldNotBeFound("urlLogistica.specified=false");
+    }
     /**
      * Executes the search, and checks that the default entity is returned
      */
@@ -304,7 +396,9 @@ public class TiendaResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tienda.getId().intValue())))
             .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE.toString())))
-            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())));
+            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())))
+            .andExpect(jsonPath("$.[*].nombreLogistica").value(hasItem(DEFAULT_NOMBRE_LOGISTICA.toString())))
+            .andExpect(jsonPath("$.[*].urlLogistica").value(hasItem(DEFAULT_URL_LOGISTICA.toString())));
     }
 
     /**
@@ -340,7 +434,9 @@ public class TiendaResourceIntTest {
         em.detach(updatedTienda);
         updatedTienda
             .nombre(UPDATED_NOMBRE)
-            .url(UPDATED_URL);
+            .url(UPDATED_URL)
+            .nombreLogistica(UPDATED_NOMBRE_LOGISTICA)
+            .urlLogistica(UPDATED_URL_LOGISTICA);
         TiendaDTO tiendaDTO = tiendaMapper.toDto(updatedTienda);
 
         restTiendaMockMvc.perform(put("/api/tiendas")
@@ -354,6 +450,8 @@ public class TiendaResourceIntTest {
         Tienda testTienda = tiendaList.get(tiendaList.size() - 1);
         assertThat(testTienda.getNombre()).isEqualTo(UPDATED_NOMBRE);
         assertThat(testTienda.getUrl()).isEqualTo(UPDATED_URL);
+        assertThat(testTienda.getNombreLogistica()).isEqualTo(UPDATED_NOMBRE_LOGISTICA);
+        assertThat(testTienda.getUrlLogistica()).isEqualTo(UPDATED_URL_LOGISTICA);
     }
 
     @Test

@@ -5,6 +5,9 @@ import com.iapp.reclamos.domain.Pedido;
 import com.iapp.reclamos.repository.PedidoRepository;
 import com.iapp.reclamos.service.dto.PedidoDTO;
 import com.iapp.reclamos.service.mapper.PedidoMapper;
+import com.opencsv.CSVReader;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +16,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -104,4 +112,84 @@ public class PedidoServiceImpl implements PedidoService {
         log.debug("Request to delete Pedido : {}", id);
         pedidoRepository.deleteById(id);
     }
+    
+    public void migrarPedidosDesdeCSV() {
+		CSVReader reader = null;
+	    try {
+	        reader = new CSVReader(new FileReader("/Users/ym/Desktop/archivoPrueba.csv"));
+	        String[] line;
+	        while ((line = reader.readNext()) != null) {
+	        		try {
+	        			PedidoDTO pedidoDTO = arrayToPedidoDTO(line);
+	        			Pedido pedido = pedidoMapper.toEntity(pedidoDTO);
+	        	        pedido = pedidoRepository.save(pedido);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+    private PedidoDTO arrayToPedidoDTO(String[] pedido) throws Exception {
+		PedidoDTO pedidoDTO = new PedidoDTO();
+		if(StringUtils.isNotBlank(pedido[0])) {
+			try {
+				pedidoDTO.setId(Long.parseLong(pedido[0]));
+			} catch (Exception e) {
+				throw new Exception("El id Pedido debe ser de tipo entero");
+			}
+		}else {
+			throw new Exception("El id Pedido no puede ser nulo");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[1])) {
+			try {
+				pedidoDTO.setFechaEntrega(LocalDate.parse(pedido[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			} catch (Exception e) {
+				throw new Exception("La fecha de Entrega debe ser de tipo string con formato yyyy-mm-dd ");
+			}
+		}else {
+			throw new Exception("La fecha de Entrega no puede ser nula");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[2])) {
+			try {
+				pedidoDTO.setMontoCompra(Float.parseFloat(pedido[2]));
+			} catch (Exception e) {
+				throw new Exception("El monto de la compra debe tener formato decimal");
+			}
+		}else {
+			throw new Exception("El monto de la compra no puede ser nulo");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[3])) {
+			pedidoDTO.setDniCliente(pedido[3]);
+		}else {
+			throw new Exception("El dni del cliente no puede ser nulo");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[4])) {
+			pedidoDTO.setNombreCliente(pedido[4]);
+		}else {
+			throw new Exception("El nombre del cliente no puede ser nulo");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[5])) {
+			pedidoDTO.setMailCliente(pedido[5]);
+		}else {
+			throw new Exception("El email del cliente no puede ser nulo");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[6])) {
+			pedidoDTO.setIdProducto(pedido[6]);
+		}
+		
+		if(StringUtils.isNotBlank(pedido[7])) {
+			pedidoDTO.setDescripcionProducto(pedido[7]);
+		}
+		
+		return pedidoDTO;
+	}
 }

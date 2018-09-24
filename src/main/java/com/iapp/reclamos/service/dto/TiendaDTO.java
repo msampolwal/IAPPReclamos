@@ -17,6 +17,10 @@ public class TiendaDTO implements Serializable {
     @NotNull
     private String url;
 
+    private String nombreLogistica;
+
+    private String urlLogistica;
+
     public Long getId() {
         return id;
     }
@@ -39,6 +43,22 @@ public class TiendaDTO implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getNombreLogistica() {
+        return nombreLogistica;
+    }
+
+    public void setNombreLogistica(String nombreLogistica) {
+        this.nombreLogistica = nombreLogistica;
+    }
+
+    public String getUrlLogistica() {
+        return urlLogistica;
+    }
+
+    public void setUrlLogistica(String urlLogistica) {
+        this.urlLogistica = urlLogistica;
     }
 
     @Override
@@ -68,6 +88,8 @@ public class TiendaDTO implements Serializable {
             "id=" + getId() +
             ", nombre='" + getNombre() + "'" +
             ", url='" + getUrl() + "'" +
+            ", nombreLogistica='" + getNombreLogistica() + "'" +
+            ", urlLogistica='" + getUrlLogistica() + "'" +
             "}";
     }
 }

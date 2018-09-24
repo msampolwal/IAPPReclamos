@@ -323,6 +323,23 @@
             <artifactId>spring-security-data</artifactId>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        <dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>3.8</version>
+		</dependency>
+		<!-- ftp dependency -->
+		<dependency>
+		    <groupId>commons-net</groupId>
+		    <artifactId>commons-net</artifactId>
+		    <version>3.6</version>
+		</dependency>
+		<dependency> 
+		    <groupId>org.mockftpserver</groupId> 
+		    <artifactId>MockFtpServer</artifactId> 
+		    <version>2.7.1</version> 
+		    <scope>test</scope> 
+		</dependency>
     </dependencies>
 
     <build>

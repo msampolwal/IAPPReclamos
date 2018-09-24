@@ -4,20 +4,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { IPedidoMySuffix } from 'app/shared/model/pedido-my-suffix.model';
-import { PedidoMySuffix } from 'app/shared/model/pedido-my-suffix.model';
+import { IParametro } from 'app/shared/model/parametro.model';
 import { Principal } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
-import { PedidoMySuffixService } from './pedido-my-suffix.service';
+import { ParametroService } from './parametro.service';
 
 @Component({
-    selector: 'jhi-pedido-my-suffix',
-    templateUrl: './pedido-my-suffix.component.html'
+    selector: 'jhi-parametro',
+    templateUrl: './parametro.component.html'
 })
-export class PedidoMySuffixComponent implements OnInit, OnDestroy {
+export class ParametroComponent implements OnInit, OnDestroy {
     currentAccount: any;
-    pedidos: IPedidoMySuffix[];
+    parametros: IParametro[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -30,10 +29,9 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
-    criteriaFilter: any;
 
     constructor(
-        private pedidoService: PedidoMySuffixService,
+        private parametroService: ParametroService,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
         private principal: Principal,
@@ -48,38 +46,17 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
         });
-        this.criteriaFilter = {
-            dniCliente: null,
-            idPedido: null,
-            areSet() {
-                return this.dniCliente != null || this.idPedido != null;
-            },
-            clear() {
-                this.dniCliente = null;
-                this.idPedido = null;
-            }
-        };
     }
 
     loadAll() {
-        const criteria = [];
-        if (this.criteriaFilter.areSet()) {
-            if (this.criteriaFilter.dniCliente != null && this.criteriaFilter.dniCliente !== '') {
-                criteria.push({ key: 'dniCliente.equals', value: this.criteriaFilter.dniCliente });
-            }
-            if (this.criteriaFilter.idPedido != null && this.criteriaFilter.idPedido !== '') {
-                criteria.push({ key: 'id.equals', value: this.criteriaFilter.idPedido });
-            }
-        }
-        this.pedidoService
+        this.parametroService
             .query({
                 page: this.page - 1,
                 size: this.itemsPerPage,
-                sort: this.sort(),
-                criteria
+                sort: this.sort()
             })
             .subscribe(
-                (res: HttpResponse<IPedidoMySuffix[]>) => this.paginatePedidos(res.body, res.headers),
+                (res: HttpResponse<IParametro[]>) => this.paginateParametros(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
@@ -92,7 +69,7 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
     }
 
     transition() {
-        this.router.navigate(['/pedido-my-suffix'], {
+        this.router.navigate(['/parametro'], {
             queryParams: {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -105,7 +82,7 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
     clear() {
         this.page = 0;
         this.router.navigate([
-            '/pedido-my-suffix',
+            '/parametro',
             {
                 page: this.page,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -119,19 +96,19 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
         this.principal.identity().then(account => {
             this.currentAccount = account;
         });
-        this.registerChangeInPedidos();
+        this.registerChangeInParametros();
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: IPedidoMySuffix) {
+    trackId(index: number, item: IParametro) {
         return item.id;
     }
 
-    registerChangeInPedidos() {
-        this.eventSubscriber = this.eventManager.subscribe('pedidoListModification', response => this.loadAll());
+    registerChangeInParametros() {
+        this.eventSubscriber = this.eventManager.subscribe('parametroListModification', response => this.loadAll());
     }
 
     sort() {
@@ -142,14 +119,11 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
         return result;
     }
 
-    private paginatePedidos(data: IPedidoMySuffix[], headers: HttpHeaders) {
+    private paginateParametros(data: IParametro[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
-        this.pedidos = data;
-        if (data.length < 1) {
-            this.onError('iappReclamosApp.pedido.sinResultado');
-        }
+        this.parametros = data;
     }
 
     private onError(errorMessage: string) {

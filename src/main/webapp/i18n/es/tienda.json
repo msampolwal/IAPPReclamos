@@ -17,7 +17,9 @@
                 "title": "Tienda"
             },
             "nombre": "Nombre",
-            "url": "Url"
+            "url": "Url",
+            "nombreLogistica": "Nombre Logistica",
+            "urlLogistica": "Url Logistica"
         }
     }
 }

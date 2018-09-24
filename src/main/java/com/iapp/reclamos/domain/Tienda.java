@@ -31,6 +31,12 @@ public class Tienda implements Serializable {
     @Column(name = "url", nullable = false)
     private String url;
 
+    @Column(name = "nombre_logistica")
+    private String nombreLogistica;
+
+    @Column(name = "url_logistica")
+    private String urlLogistica;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -65,6 +71,32 @@ public class Tienda implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public String getNombreLogistica() {
+        return nombreLogistica;
+    }
+
+    public Tienda nombreLogistica(String nombreLogistica) {
+        this.nombreLogistica = nombreLogistica;
+        return this;
+    }
+
+    public void setNombreLogistica(String nombreLogistica) {
+        this.nombreLogistica = nombreLogistica;
+    }
+
+    public String getUrlLogistica() {
+        return urlLogistica;
+    }
+
+    public Tienda urlLogistica(String urlLogistica) {
+        this.urlLogistica = urlLogistica;
+        return this;
+    }
+
+    public void setUrlLogistica(String urlLogistica) {
+        this.urlLogistica = urlLogistica;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -93,6 +125,8 @@ public class Tienda implements Serializable {
             "id=" + getId() +
             ", nombre='" + getNombre() + "'" +
             ", url='" + getUrl() + "'" +
+            ", nombreLogistica='" + getNombreLogistica() + "'" +
+            ", urlLogistica='" + getUrlLogistica() + "'" +
             "}";
     }
 }

@@ -11,6 +11,7 @@
                 "pedidoMySuffix": "Pedido",
                 "tiendaMySuffix": "Tienda",
                 "tipoReclamoMySuffix": "Tipo Reclamo",
+                "parametro": "Parametro",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

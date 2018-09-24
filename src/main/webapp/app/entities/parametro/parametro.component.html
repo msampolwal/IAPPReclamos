@@ -1,50 +1,46 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="iappReclamosApp.tienda.home.title">Tiendas</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-tienda-my-suffix" [routerLink]="['/tienda-my-suffix/new']">
+        <span jhiTranslate="iappReclamosApp.parametro.home.title">Parametros</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-parametro" [routerLink]="['/parametro/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="iappReclamosApp.tienda.home.createLabel">
-            Create new Tienda
+            <span  jhiTranslate="iappReclamosApp.parametro.home.createLabel">
+            Create new Parametro
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive" *ngIf="tiendas">
+    <div class="table-responsive" *ngIf="parametros">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="nombre"><span jhiTranslate="iappReclamosApp.tienda.nombre">Nombre</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="url"><span jhiTranslate="iappReclamosApp.tienda.url">Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="nombreLogistica"><span jhiTranslate="iappReclamosApp.tienda.nombreLogistica">Nombre Logistica</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="urlLogistica"><span jhiTranslate="iappReclamosApp.tienda.urlLogistica">Url Logistica</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="clave"><span jhiTranslate="iappReclamosApp.parametro.clave">Clave</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="valor"><span jhiTranslate="iappReclamosApp.parametro.valor">Valor</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let tienda of tiendas ;trackBy: trackId">
-                <td><a [routerLink]="['/tienda-my-suffix', tienda.id, 'view' ]">{{tienda.id}}</a></td>
-                <td>{{tienda.nombre}}</td>
-                <td>{{tienda.url}}</td>
-                <td>{{tienda.nombreLogistica}}</td>
-                <td>{{tienda.urlLogistica}}</td>
+            <tr *ngFor="let parametro of parametros ;trackBy: trackId">
+                <td><a [routerLink]="['/parametro', parametro.id, 'view' ]">{{parametro.id}}</a></td>
+                <td>{{parametro.clave}}</td>
+                <td>{{parametro.valor}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['/tienda-my-suffix', tienda.id, 'view' ]"
+                                [routerLink]="['/parametro', parametro.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/tienda-my-suffix', tienda.id, 'edit']"
+                                [routerLink]="['/parametro', parametro.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'tienda-my-suffix/'+ tienda.id + '/delete'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'parametro/'+ parametro.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
@@ -57,7 +53,7 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="tiendas && tiendas.length">
+    <div *ngIf="parametros && parametros.length">
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>

@@ -24,7 +24,8 @@
             "idProducto": "Id Producto",
             "descripcionProducto": "Descripcion Producto",
             "tienda": "Tienda",
-            "reclamo": "Reclamo"
+            "reclamo": "Reclamo",
+            "sinResultado": "El pedido no existe para el juego de datos ingresado"
         }
     }
 }

@@ -82,6 +82,12 @@ public class TiendaQueryService extends QueryService<Tienda> {
             if (criteria.getUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getUrl(), Tienda_.url));
             }
+            if (criteria.getNombreLogistica() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getNombreLogistica(), Tienda_.nombreLogistica));
+            }
+            if (criteria.getUrlLogistica() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getUrlLogistica(), Tienda_.urlLogistica));
+            }
         }
         return specification;
     }

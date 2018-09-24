@@ -1,9 +1,9 @@
 package com.iapp.reclamos.service.mapper;
 
-import com.iapp.reclamos.domain.*;
-import com.iapp.reclamos.service.dto.TiendaDTO;
+import org.mapstruct.Mapper;
 
-import org.mapstruct.*;
+import com.iapp.reclamos.domain.Tienda;
+import com.iapp.reclamos.service.dto.TiendaDTO;
 
 /**
  * Mapper for the entity Tienda and its DTO TiendaDTO.

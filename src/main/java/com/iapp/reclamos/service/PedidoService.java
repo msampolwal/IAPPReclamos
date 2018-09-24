@@ -50,4 +50,9 @@ public interface PedidoService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
+    /**
+     * Migracion de CSV
+     */
+    void migrarPedidosDesdeCSV();
 }
