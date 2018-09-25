@@ -23,6 +23,25 @@ Toda la información se encuentra en nuestro Portal de [API-DOC](https://google.c
 
 ![Diagrama](./docs/arquitectura.jpg)</br>
 
+## Servidor FTP
+
+Diariamente el Servicio de Gestión de Reclamos buscará el lote de pediods del día anterior para poder realizarle un reclamo en caso que sea requerido.
+El formato del nombre del archivo será el siguiente:
+
+> PEDIDOS_{{$datetime}}.csv
+
+> Ejemplo:
+> PEDIDOS_20180924.csv
+
+Y el contenido tendrá los siguientes datos:
+
+
+|IdPedido  	|FechaEstimada	|MontoCompra|DNICliente	|NombreCliente	|MailCliente	|idProducto	|DescripcionProducto|
+|:----------|:--------------|:----------|:----------|:--------------|:--------------|:----------|:------------------|
+|000001		|2018-09-15		|180.00		|18345672	|Arturo Sampala	|arty@yahoo.com	|18976AT65	|Mouse para gamer	|
+
+
+[Ver ejemplo adjunto](./docs/example.csv)
 
 <a name="spike"/>
 ## SPIKE Tecnológico
