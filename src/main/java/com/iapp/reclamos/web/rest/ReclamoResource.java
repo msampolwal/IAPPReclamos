@@ -148,21 +148,62 @@ public class ReclamoResource {
     }
     
     /**
-     * DELETE  /reclamos/finalizar/:id : finalizar the "id" reclamo.
+     * GET  /reclamos/finalizar/:id : finalizar the "id" reclamo.
      *
      * @param id the id of the reclamoDTO to finalizar
      * @return the ResponseEntity with status 200 (OK)
      */
     @GetMapping("/reclamos/finalizar/{id}")
     @Timed
-    public ResponseEntity<Void> finalizarReclamo(@PathVariable Long id) {
+    public ResponseEntity<ReclamoDTO> finalizarReclamo(@PathVariable Long id) {
         log.debug("REST request to finalizar Reclamo : {}", id);
         Optional<ReclamoDTO> reclamoDTO = reclamoService.findOne(id);
-        if (reclamoDTO.isPresent()) {
-        		ReclamoDTO dto = reclamoDTO.get();
+        ReclamoDTO dto = null;
+        if (reclamoDTO.isPresent() && reclamoDTO.get().getEstado().equals(Estado.PENDIENTE)) {
+        		dto = reclamoDTO.get();
         		dto.setEstado(Estado.FINALIZADO);
         		reclamoService.save(dto);
+        } else {
+        		throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "No se puede finalizar el reclamo con ese id");
         }
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityFinalizadoAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dto.getId().toString()))
+                .body(dto);
+    }
+    
+    /**
+     * GET  /public/reclamos/finalizar/:id : finalizar the "id" reclamo.
+     *
+     * @param id the id of the reclamoDTO to finalizar
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @GetMapping("/public/reclamos/finalizar/{id}")
+    @Timed
+    public ResponseEntity<ReclamoDTO> finalizarReclamoLogistica(@PathVariable Long id) {
+        log.debug("REST request to finalizar Reclamo : {}", id);
+        Optional<ReclamoDTO> reclamoDTO = reclamoService.findOne(id);
+        ReclamoDTO dto = null;
+        if (reclamoDTO.isPresent() && reclamoDTO.get().getEstado().equals(Estado.PENDIENTE_LOGISTICA)) {
+        		dto = reclamoDTO.get();
+        		dto.setEstado(Estado.FINALIZADO);
+        		reclamoService.save(dto);
+        } else {
+        		throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "No se puede finalizar el reclamo con ese id");
+        }
+        return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dto.getId().toString()))
+                .body(dto);
+    }
+    
+    /**
+     * GET  /public/reclamos/:id : get the "id" reclamo.
+     *
+     * @param id the id of the reclamoDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the reclamoDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/public/reclamos/{id}")
+    @Timed
+    public ResponseEntity<ReclamoDTO> getReclamoPublic(@PathVariable Long id) {
+        return this.getReclamo(id);
     }
 }

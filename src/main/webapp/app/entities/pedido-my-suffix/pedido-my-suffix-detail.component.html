@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="pedido">
-            <h2><span jhiTranslate="iappReclamosApp.pedido.detail.title">Pedido</span> {{pedido.id}}</h2>
+            <h2><span jhiTranslate="iappReclamosApp.pedido.detail.title">Pedido</span></h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
@@ -36,7 +36,7 @@
                 <dt><span jhiTranslate="iappReclamosApp.pedido.tienda">Tienda</span></dt>
                 <dd>
                     <div *ngIf="pedido.tiendaId">
-                        <a [routerLink]="['/tienda-my-suffix', pedido.tiendaId, 'view']">{{pedido.tiendaId}}</a>
+                        <a [routerLink]="['/tienda-my-suffix', pedido.tiendaId, 'view']">{{pedido.nombreTienda}}</a>
                     </div>
                 </dd>
             </dl>
@@ -47,11 +47,11 @@
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
             </button>
 
-            <button type="button"
-                    [routerLink]="['/pedido-my-suffix', pedido.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-            </button>
+<!--             <button type="button" -->
+<!--                     [routerLink]="['/pedido-my-suffix', pedido.id, 'edit']" -->
+<!--                     class="btn btn-primary"> -->
+<!--                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span> -->
+<!--             </button> -->
         </div>
     </div>
 </div>

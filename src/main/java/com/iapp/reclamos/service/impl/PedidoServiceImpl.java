@@ -10,7 +10,7 @@ import com.opencsv.CSVReader;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -122,7 +122,8 @@ public class PedidoServiceImpl implements PedidoService {
 	        		try {
 	        			PedidoDTO pedidoDTO = arrayToPedidoDTO(line);
 	        			Pedido pedido = pedidoMapper.toEntity(pedidoDTO);
-	        	        pedido = pedidoRepository.save(pedido);
+	        			System.out.println(pedido.toString());
+//	        	        pedido = pedidoRepository.save(pedido);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}

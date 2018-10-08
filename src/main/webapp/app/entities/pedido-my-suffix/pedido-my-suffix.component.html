@@ -1,13 +1,13 @@
 <div>
-    <h2 id="page-heading">
-        <span jhiTranslate="iappReclamosApp.pedido.home.title">Pedidos</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-pedido-my-suffix" [routerLink]="['/pedido-my-suffix/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="iappReclamosApp.pedido.home.createLabel">
-            Create new Pedido
-            </span>
-        </button>
-    </h2>
+<!--     <h2 id="page-heading"> -->
+<!--         <span jhiTranslate="iappReclamosApp.pedido.home.title">Pedidos</span> -->
+<!--         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-pedido-my-suffix" [routerLink]="['/pedido-my-suffix/new']"> -->
+<!--             <fa-icon [icon]="'plus'"></fa-icon> -->
+<!--             <span  jhiTranslate="iappReclamosApp.pedido.home.createLabel"> -->
+<!--             Create new Pedido -->
+<!--             </span> -->
+<!--         </button> -->
+<!--     </h2> -->
     <jhi-alert></jhi-alert>
     <br/>
     
@@ -15,16 +15,16 @@
     		<div class="form-row">
     			<div class="form-group col-md-6">
          		<label class="form-control-label" for="field_idPedido">Id Pedido</label>
-            		<input type="text" class="form-control" name="idPedido" id="field_idPedido"
+            		<input type="text" class="form-control" required="true" name="idPedido" id="field_idPedido"
             			[(ngModel)]="criteriaFilter.idPedido"/>
          	</div>
          	<div class="form-group col-md-6">
 	         	<label class="form-control-label" jhiTranslate="iappReclamosApp.pedido.dniCliente" for="field_dniCliente">Dni Cliente</label>
-	            <input type="text" class="form-control" name="dniCliente" id="field_dniCliente"
+	            <input type="text" class="form-control" required="true" name="dniCliente" id="field_dniCliente"
 	            		[(ngModel)]="criteriaFilter.dniCliente"/>
 	       	</div>
         	</div>
-         <button type="submit" id="find-entity" class="btn btn-primary">
+         <button type="submit" id="find-entity" [disabled]="editForm.form.invalid" class="btn btn-primary">
              <span>Buscar</span>
          </button>
     </form>

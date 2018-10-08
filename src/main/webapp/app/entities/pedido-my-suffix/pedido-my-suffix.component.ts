@@ -115,7 +115,7 @@ export class PedidoMySuffixComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.loadAll();
+        //        this.loadAll();
         this.principal.identity().then(account => {
             this.currentAccount = account;
         });

@@ -41,4 +41,8 @@ public class FtpClient {
     public void close() throws IOException {
         ftp.disconnect();
     }
+    
+    public FTPClient getInstancia() {
+    		return ftp;
+    }
 }

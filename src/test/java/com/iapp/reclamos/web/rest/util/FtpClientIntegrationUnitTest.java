@@ -1,15 +1,14 @@
 package com.iapp.reclamos.web.rest.util;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
-import org.mockftpserver.fake.FakeFtpServer;
-import org.mockftpserver.fake.UserAccount;
-import org.mockftpserver.fake.filesystem.DirectoryEntry;
-import org.mockftpserver.fake.filesystem.FileEntry;
-import org.mockftpserver.fake.filesystem.FileSystem;
-import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
+import org.junit.Test;
 
 import com.iapp.reclamos.service.util.FtpClient;
 
@@ -17,30 +16,42 @@ import com.iapp.reclamos.service.util.FtpClient;
  * 
  */
 public class FtpClientIntegrationUnitTest {
-	private FakeFtpServer fakeFtpServer;
-	 
     private FtpClient ftpClient;
  
     @Before
     public void setup() throws IOException {
-        fakeFtpServer = new FakeFtpServer();
-        fakeFtpServer.addUserAccount(new UserAccount("ym", "meolvide", "/data"));
- 
-        FileSystem fileSystem = new UnixFakeFileSystem();
-        fileSystem.add(new DirectoryEntry("/data"));
-        fileSystem.add(new FileEntry("/data/foobar.txt", "abcdef 1234567890"));
-        fakeFtpServer.setFileSystem(fileSystem);
-        fakeFtpServer.setServerControlPort(0);
- 
-        fakeFtpServer.start();
- 
-        ftpClient = new FtpClient("10.15.24.6", fakeFtpServer.getServerControlPort(), "ym", "meolvide");
+        ftpClient = new FtpClient("10.100.22.118", 21, "app-reclamos", "reclamos");
         ftpClient.open();
     }
+    
+    @Test
+    public void ftpTest() {
+    		OutputStream os = null;
+		File f = null;
+    		try {
+			for (String nombre : Arrays.asList(ftpClient.getInstancia().listNames())) {
+				os = new FileOutputStream(nombre);
+				ftpClient.getInstancia().retrieveFile(nombre, os);
+				f = new File(nombre);
+				procesarArchivo(os);
+				
+			}
+				
+			ftpClient.getInstancia().retrieveFileStream("");
+//			Arrays.asList(ftpClient.getInstancia().listFiles()).forEach(archivo -> 
+//				
+//			);
+		} catch (IOException e) {
+			e.printStackTrace();
+		};
+    }
  
-    @After
+    private void procesarArchivo(OutputStream os) {
+    		
+	}
+
+	@After
     public void teardown() throws IOException {
         ftpClient.close();
-        fakeFtpServer.stop();
     }
 }
