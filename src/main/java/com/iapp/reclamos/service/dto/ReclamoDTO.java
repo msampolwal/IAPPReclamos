@@ -74,6 +74,8 @@ public class ReclamoDTO implements Serializable {
     }
 
     public Boolean getNotificaLogistica() {
+    		if(notificaLogistica == null)
+    			notificaLogistica = false;
 		return notificaLogistica;
 	}
 
