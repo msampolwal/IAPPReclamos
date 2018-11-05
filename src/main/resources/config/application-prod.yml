@@ -29,7 +29,7 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3306/IAPPReclamos?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
-        password:
+        password: hsq00mmvh
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -49,10 +49,18 @@ spring:
     liquibase:
         contexts: prod
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+        host: smtp.gmail.com
+        port: 587
+        username: reclamos.noreply@gmail.com
+        password: iappreclamosg2
+        protocol: smtp
+        tls: true
+        auth: true
+        from: reclamos.noreply@gmail.com
+        properties: 
+          auth: true
+          starttls.enable: true
+          ssl.trust: smtp.gmail.com
     thymeleaf:
         cache: true
 

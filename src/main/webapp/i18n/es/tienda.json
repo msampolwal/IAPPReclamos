@@ -4,7 +4,7 @@
         "tienda" : {
             "home": {
                 "title": "Tiendas",
-                "createLabel": "Crear nuevo Tienda",
+                "createLabel": "Crear nueva Tienda",
                 "createOrEditLabel": "Crear o editar Tienda"
             },
             "created": "Un nuevo Tienda ha sido creado con el identificador {{ param }}",

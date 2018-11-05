@@ -1,31 +1,29 @@
 package com.iapp.reclamos.service.impl;
 
-import com.iapp.reclamos.service.PedidoService;
-import com.iapp.reclamos.domain.Pedido;
-import com.iapp.reclamos.repository.PedidoRepository;
-import com.iapp.reclamos.service.dto.PedidoDTO;
-import com.iapp.reclamos.service.mapper.PedidoMapper;
-import com.opencsv.CSVReader;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.iapp.reclamos.domain.Pedido;
+import com.iapp.reclamos.repository.PedidoRepository;
+import com.iapp.reclamos.service.PedidoService;
+import com.iapp.reclamos.service.dto.PedidoDTO;
+import com.iapp.reclamos.service.mapper.PedidoMapper;
+import com.opencsv.CSVReader;
 /**
  * Service Implementation for managing Pedido.
  */
@@ -72,8 +70,6 @@ public class PedidoServiceImpl implements PedidoService {
             .map(pedidoMapper::toDto);
     }
 
-
-
     /**
      *  get all the pedidos where Reclamo is null.
      *  @return the list of entities
@@ -113,10 +109,10 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoRepository.deleteById(id);
     }
     
-    public void migrarPedidosDesdeCSV() {
+    public void migrarPedidosDesdeCSV(Reader fileReader) {
 		CSVReader reader = null;
 	    try {
-	        reader = new CSVReader(new FileReader("/Users/ym/Desktop/archivoPrueba.csv"));
+	        reader = new CSVReader(fileReader);
 	        String[] line;
 	        while ((line = reader.readNext()) != null) {
 	        		try {

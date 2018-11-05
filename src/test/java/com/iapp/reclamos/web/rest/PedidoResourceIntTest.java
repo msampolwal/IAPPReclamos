@@ -714,6 +714,6 @@ public class PedidoResourceIntTest {
     @Test
     @Transactional
     public void testMigracionCSV() {
-        pedidoService.migrarPedidosDesdeCSV();
+        pedidoService.migrarPedidosDesdeCSV(null);
     }
 }

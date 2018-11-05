@@ -1,6 +1,9 @@
 package com.iapp.reclamos.config;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import com.iapp.reclamos.domain.Parametro;
 import com.iapp.reclamos.repository.ParametroRepository;
+import com.iapp.reclamos.service.PedidoService;
 import com.iapp.reclamos.service.util.FtpClient;
 
 @Configuration
@@ -21,20 +25,40 @@ public class SchedulerConfiguration {
 	
 	@Autowired
     private ParametroRepository parametroRepository;
+	@Autowired
+    private PedidoService pedidoService;
 
 	@Scheduled(fixedDelay = 10000)
 	public void procesarArchivoTienda() {
-		log.info("Procesando archivos de Tienda");
-		Parametro ipFtp = parametroRepository.findByClave("ipFtp");
-		Parametro usuarioFtp = parametroRepository.findByClave("usuarioFtp");
-		Parametro claveFtp = parametroRepository.findByClave("claveFtp");
-		Parametro puertoFtp = parametroRepository.findByClave("puertoFtp");
-		ftpClient = new FtpClient(ipFtp.getValor(), Integer.parseInt(puertoFtp.getValor()), usuarioFtp.getValor(), claveFtp.getValor());
-        try {
-			ftpClient.open();
-		} catch (IOException e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
+//		log.info("******* Inicia tarea - Procesando archivos de Tienda *******");
+//		Parametro ipFtp = parametroRepository.findByClave("ipFtp");
+//		Parametro usuarioFtp = parametroRepository.findByClave("usuarioFtp");
+//		Parametro claveFtp = parametroRepository.findByClave("claveFtp");
+//		Parametro puertoFtp = parametroRepository.findByClave("puertoFtp");
+//        try {
+//        		ftpClient = new FtpClient(ipFtp.getValor(), Integer.parseInt(puertoFtp.getValor()), usuarioFtp.getValor(), claveFtp.getValor());
+//        		ftpClient.open();
+//        		log.info("******* Se conecto con servidor FTP " + usuarioFtp.getValor() + ":" + claveFtp.getValor() + "@" + ipFtp.getValor() + ":" + puertoFtp.getValor() + " *******");
+//        		
+//			for (String nombre : Arrays.asList(ftpClient.getInstancia().listNames())) {
+//				System.out.println("Se procesa Archivo: " + nombre);
+//				Reader reader = new InputStreamReader(ftpClient.getInstancia().retrieveFileStream(nombre));
+//				
+//				pedidoService.migrarPedidosDesdeCSV(reader);
+//				
+//				reader.close();
+//				ftpClient.getInstancia().deleteFile(nombre);
+//				System.out.println("Se elimina Archivo: " + nombre);
+//			}
+//		} catch (IOException e) {
+//			log.error(e.getMessage());
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				ftpClient.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 }
