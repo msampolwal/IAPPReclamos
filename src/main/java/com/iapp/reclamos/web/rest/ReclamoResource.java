@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
+import com.iapp.reclamos.domain.Parametro;
 import com.iapp.reclamos.domain.enumeration.Estado;
+import com.iapp.reclamos.repository.ParametroRepository;
 import com.iapp.reclamos.service.ReclamoQueryService;
 import com.iapp.reclamos.service.ReclamoService;
 import com.iapp.reclamos.service.dto.ReclamoCriteria;
@@ -47,12 +49,15 @@ public class ReclamoResource {
     private static final String ENTITY_NAME = "reclamo";
 
     private final ReclamoService reclamoService;
-
+    
     private final ReclamoQueryService reclamoQueryService;
+    
+    private final ParametroRepository parametroRepository;
 
-    public ReclamoResource(ReclamoService reclamoService, ReclamoQueryService reclamoQueryService) {
+    public ReclamoResource(ReclamoService reclamoService, ReclamoQueryService reclamoQueryService, ParametroRepository parametroRepository) {
         this.reclamoService = reclamoService;
         this.reclamoQueryService = reclamoQueryService;
+        this.parametroRepository = parametroRepository;
     }
 
     /**
@@ -70,12 +75,7 @@ public class ReclamoResource {
             throw new BadRequestAlertException("A new reclamo cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
-        if(reclamoDTO.getNotificaLogistica())
-	    		reclamoDTO.setEstado(Estado.PENDIENTE_LOGISTICA);
-	    else
-	    		reclamoDTO.setEstado(Estado.PENDIENTE);
-        
-        ReclamoDTO result = reclamoService.save(reclamoDTO);
+        ReclamoDTO result = reclamoService.createReclamo(reclamoDTO);
         return ResponseEntity.created(new URI("/api/reclamos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -161,8 +161,7 @@ public class ReclamoResource {
         ReclamoDTO dto = null;
         if (reclamoDTO.isPresent() && reclamoDTO.get().getEstado().equals(Estado.PENDIENTE)) {
         		dto = reclamoDTO.get();
-        		dto.setEstado(Estado.FINALIZADO);
-        		reclamoService.save(dto);
+        		reclamoService.finalizar(dto);
         } else {
         		throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "No se puede finalizar el reclamo con ese id");
         }
@@ -185,8 +184,7 @@ public class ReclamoResource {
         ReclamoDTO dto = null;
         if (reclamoDTO.isPresent() && reclamoDTO.get().getEstado().equals(Estado.PENDIENTE_LOGISTICA)) {
         		dto = reclamoDTO.get();
-        		dto.setEstado(Estado.FINALIZADO);
-        		reclamoService.save(dto);
+        		reclamoService.finalizar(dto);
         } else {
         		throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "No se puede finalizar el reclamo con ese id");
         }

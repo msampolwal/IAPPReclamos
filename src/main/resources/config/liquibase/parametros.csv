@@ -1,0 +1,5 @@
+id;clave;Valor
+1;ipFtp;192.168.0.2
+2;puertoFtp;2221
+3;usuarioFtp;francis
+4;claveFtp;francis

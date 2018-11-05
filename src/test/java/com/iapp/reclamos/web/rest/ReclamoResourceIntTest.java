@@ -5,6 +5,7 @@ import com.iapp.reclamos.IappReclamosApp;
 import com.iapp.reclamos.domain.Reclamo;
 import com.iapp.reclamos.domain.Pedido;
 import com.iapp.reclamos.domain.TipoReclamo;
+import com.iapp.reclamos.repository.ParametroRepository;
 import com.iapp.reclamos.repository.ReclamoRepository;
 import com.iapp.reclamos.service.ReclamoService;
 import com.iapp.reclamos.service.dto.ReclamoDTO;
@@ -82,11 +83,14 @@ public class ReclamoResourceIntTest {
     private MockMvc restReclamoMockMvc;
 
     private Reclamo reclamo;
+    
+    @Autowired
+    private ParametroRepository parametroRepository;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ReclamoResource reclamoResource = new ReclamoResource(reclamoService, reclamoQueryService);
+        final ReclamoResource reclamoResource = new ReclamoResource(reclamoService, reclamoQueryService, parametroRepository);
         this.restReclamoMockMvc = MockMvcBuilders.standaloneSetup(reclamoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

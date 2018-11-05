@@ -43,4 +43,14 @@ public interface ReclamoService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Finaliza un reclamo.
+     *
+     * @param reclamoDTO de la entidad a finalizar
+     * @return the persisted entity
+     */
+	ReclamoDTO finalizar(ReclamoDTO reclamoDTO);
+
+	ReclamoDTO createReclamo(ReclamoDTO reclamoDTO);
 }
