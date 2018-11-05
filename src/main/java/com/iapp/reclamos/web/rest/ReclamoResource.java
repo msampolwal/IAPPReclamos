@@ -29,6 +29,7 @@ import com.iapp.reclamos.service.ReclamoQueryService;
 import com.iapp.reclamos.service.ReclamoService;
 import com.iapp.reclamos.service.dto.ReclamoCriteria;
 import com.iapp.reclamos.service.dto.ReclamoDTO;
+import com.iapp.reclamos.service.dto.ReclamoFinalizadoDTO;
 import com.iapp.reclamos.web.rest.errors.BadRequestAlertException;
 import com.iapp.reclamos.web.rest.util.HeaderUtil;
 import com.iapp.reclamos.web.rest.util.PaginationUtil;
@@ -171,17 +172,12 @@ public class ReclamoResource {
                 .body(dto);
     }
     
-    /**
-     * GET  /public/reclamos/finalizar/:id : finalizar the "id" reclamo.
-     *
-     * @param id the id of the reclamoDTO to finalizar
-     * @return the ResponseEntity with status 200 (OK)
-     */
-    @GetMapping("/public/reclamos/finalizar/{id}")
+    @PostMapping("/public/reclamos/finalizar/{id}")
     @Timed
-    public ResponseEntity<ReclamoDTO> finalizarReclamoLogistica(@PathVariable Long id) {
-        log.debug("REST request to finalizar Reclamo : {}", id);
-        Optional<ReclamoDTO> reclamoDTO = reclamoService.findOne(id);
+    public ResponseEntity<ReclamoDTO> finalizarReclamoLogistica(@Valid @RequestBody ReclamoFinalizadoDTO r) throws URISyntaxException {
+        Long id_pedido = r.getId_pedido();
+		log.debug("REST request to finalizar Reclamo : {}", id_pedido);
+        Optional<ReclamoDTO> reclamoDTO = reclamoService.findOne(id_pedido);
         ReclamoDTO dto = null;
         if (reclamoDTO.isPresent() && reclamoDTO.get().getEstado().equals(Estado.PENDIENTE_LOGISTICA)) {
         		dto = reclamoDTO.get();
