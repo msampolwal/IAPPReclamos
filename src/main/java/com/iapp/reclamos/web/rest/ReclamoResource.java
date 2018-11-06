@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
-import com.iapp.reclamos.domain.Parametro;
 import com.iapp.reclamos.domain.enumeration.Estado;
 import com.iapp.reclamos.repository.ParametroRepository;
+import com.iapp.reclamos.service.PedidoService;
 import com.iapp.reclamos.service.ReclamoQueryService;
 import com.iapp.reclamos.service.ReclamoService;
 import com.iapp.reclamos.service.dto.ReclamoCriteria;
@@ -51,14 +51,17 @@ public class ReclamoResource {
 
     private final ReclamoService reclamoService;
     
+    private final PedidoService pedidoService;
+    
     private final ReclamoQueryService reclamoQueryService;
     
     private final ParametroRepository parametroRepository;
 
-    public ReclamoResource(ReclamoService reclamoService, ReclamoQueryService reclamoQueryService, ParametroRepository parametroRepository) {
+    public ReclamoResource(ReclamoService reclamoService, ReclamoQueryService reclamoQueryService, ParametroRepository parametroRepository, PedidoService pedidoService) {
         this.reclamoService = reclamoService;
         this.reclamoQueryService = reclamoQueryService;
         this.parametroRepository = parametroRepository;
+        this.pedidoService = pedidoService;
     }
 
     /**

@@ -1,14 +1,8 @@
 package com.iapp.reclamos.service.impl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.iapp.reclamos.domain.Parametro;
 import com.iapp.reclamos.domain.Reclamo;
 import com.iapp.reclamos.domain.enumeration.Estado;
 import com.iapp.reclamos.repository.ParametroRepository;
 import com.iapp.reclamos.repository.ReclamoRepository;
 import com.iapp.reclamos.service.MailService;
 import com.iapp.reclamos.service.ReclamoService;
+import com.iapp.reclamos.service.TiendaService;
 import com.iapp.reclamos.service.dto.ReclamoDTO;
 import com.iapp.reclamos.service.mapper.ReclamoMapper;
 /**
@@ -41,13 +35,16 @@ public class ReclamoServiceImpl implements ReclamoService {
     
     private final MailService mailService;
     
+    private final TiendaService tiendaService;
+    
     private final ParametroRepository parametroRepository;
 
-    public ReclamoServiceImpl(ReclamoRepository reclamoRepository, ReclamoMapper reclamoMapper, MailService mailService, ParametroRepository parametroRepository) {
+    public ReclamoServiceImpl(ReclamoRepository reclamoRepository, ReclamoMapper reclamoMapper, MailService mailService, ParametroRepository parametroRepository, TiendaService tiendaService) {
         this.reclamoRepository = reclamoRepository;
         this.reclamoMapper = reclamoMapper;
         this.mailService = mailService;
         this.parametroRepository = parametroRepository;
+        this.tiendaService = tiendaService;
     }
 
     /**
@@ -118,6 +115,7 @@ public class ReclamoServiceImpl implements ReclamoService {
         reclamo.setEstado(Estado.FINALIZADO);
         reclamo = reclamoRepository.save(reclamo);
         mailService.sendMailReclamoFinalizado(reclamoDTO);
+        tiendaService.notificarTienda(reclamoDTO);
         return reclamoMapper.toDto(reclamo);
     }
     
@@ -128,54 +126,28 @@ public class ReclamoServiceImpl implements ReclamoService {
      * @return the persisted entity
      */
     @Override
-    public ReclamoDTO createReclamo(ReclamoDTO reclamoDTO) {
-        log.debug("Request to save Reclamo : {}", reclamoDTO);
-        Reclamo reclamo = reclamoMapper.toEntity(reclamoDTO);
-        
-        if(reclamoDTO.getNotificaLogistica()) {
-	    		reclamo.setEstado(Estado.PENDIENTE_LOGISTICA);
-	    		Parametro servicioLogistica = parametroRepository.findByClave("newReclamoLogistica");
-	    		if(servicioLogistica != null) {
-	    			try {
-	    				URL url = new URL(reclamo.getPedido().getTienda().getUrlLogistica()+"logistica/"+reclamoDTO.getPedidoId()+"/complain");
-					HttpsURLConnection postConnection = (HttpsURLConnection) url.openConnection();
-					postConnection.setRequestMethod("POST");
-					postConnection.setRequestProperty("Content-Type", "application/json");
-//					String params = "{\"idPedido\": " + reclamoDTO.getPedidoId() + "}";
-					
-					postConnection.setDoOutput(true);
-					postConnection.setDoInput(true);
-					OutputStream os = postConnection.getOutputStream();
-//					os.write(params.getBytes());
-					os.flush();
-					os.close();
-					
-					int responseCode = postConnection.getResponseCode();
-					log.debug("POST Response Code: " + responseCode);
-					log.debug("POST Response Message: " + postConnection.getResponseMessage());
-					
-					if (responseCode == HttpURLConnection.HTTP_OK) { //success
-				        BufferedReader in = new BufferedReader(new InputStreamReader(
-				            postConnection.getInputStream()));
-				        String inputLine;
-				        StringBuffer response = new StringBuffer();
-				        while ((inputLine = in .readLine()) != null) {
-				            response.append(inputLine);
-				        } in .close();
-				        // print result
-				        System.out.println(response.toString());
-				    } else {
-				        System.out.println("POST NOT WORKED");
-				    }
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-	    		}
-	    }else {
-	    		reclamo.setEstado(Estado.PENDIENTE);
-	    }
-        
-        reclamo = reclamoRepository.save(reclamo);
-        return reclamoMapper.toDto(reclamo);
-    }
+	public ReclamoDTO createReclamo(ReclamoDTO reclamoDTO) {
+		log.debug("Request to save Reclamo : {}", reclamoDTO);
+		Reclamo reclamo = reclamoMapper.toEntity(reclamoDTO);
+		
+		try {
+			
+			if (reclamoDTO.getNotificaLogistica()) {
+				reclamo.setEstado(Estado.PENDIENTE_LOGISTICA);
+				URI url = new URI(reclamo.getPedido().getTienda().getUrlLogistica() + "logistica/"
+						+ reclamoDTO.getPedidoId() + "/complain");
+
+				tiendaService.notificarLogistica(reclamoDTO);
+			} else {
+				reclamo.setEstado(Estado.PENDIENTE);
+			}
+			tiendaService.notificarTienda(reclamoDTO);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		reclamo = reclamoRepository.save(reclamo);
+		return reclamoMapper.toDto(reclamo);
+	}
 }

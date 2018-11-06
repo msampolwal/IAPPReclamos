@@ -1,13 +1,21 @@
 package com.iapp.reclamos.domain;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Tienda.
@@ -36,6 +44,9 @@ public class Tienda implements Serializable {
 
     @Column(name = "url_logistica")
     private String urlLogistica;
+    
+    @OneToMany(mappedBy="tienda", fetch= FetchType.LAZY)
+    private List<Pedido> pedidos;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -129,4 +140,13 @@ public class Tienda implements Serializable {
             ", urlLogistica='" + getUrlLogistica() + "'" +
             "}";
     }
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+    
 }

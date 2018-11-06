@@ -1,11 +1,12 @@
 package com.iapp.reclamos.service;
 
-import com.iapp.reclamos.service.dto.TiendaDTO;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
+import com.iapp.reclamos.service.dto.ReclamoDTO;
+import com.iapp.reclamos.service.dto.TiendaDTO;
 
 /**
  * Service Interface for managing Tienda.
@@ -43,4 +44,17 @@ public interface TiendaService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
+    /**
+     * Notifies to Tienda
+     * @param id
+     */
+    void notificarTienda(ReclamoDTO reclamo);
+    
+    
+    /**
+     * Notifies Logistica
+     * @param reclamo
+     */
+    void notificarLogistica(ReclamoDTO reclamo);
 }
