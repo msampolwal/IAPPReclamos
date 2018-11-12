@@ -183,14 +183,20 @@ public class ReclamoResource {
 		log.debug("REST request to finalizar Reclamo : {}", id_pedido);
         Optional<PedidoDTO> pedidoDTO = pedidoService.findOne(id_pedido);
         if(pedidoDTO.isPresent()) {
-        		Optional<ReclamoDTO> reclamoDTO = reclamoService.findOne(pedidoDTO.get().getReclamoId());
-        		if (reclamoDTO.isPresent() && reclamoDTO.get().getEstado().equals(Estado.PENDIENTE_LOGISTICA)) {
-        			dto = reclamoDTO.get();
-            		reclamoService.finalizar(dto);
-            } else {
-            		throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "No se puede finalizar el reclamo con ese id");
-            }
-        }
+        		if(pedidoDTO.get().getReclamoId() != null) {
+	        		Optional<ReclamoDTO> reclamoDTO = reclamoService.findOne(pedidoDTO.get().getReclamoId());
+	        		if (reclamoDTO.isPresent() && reclamoDTO.get().getEstado().equals(Estado.PENDIENTE_LOGISTICA)) {
+	        			dto = reclamoDTO.get();
+	            		dto = reclamoService.finalizar(dto);
+	            } else {
+	            		throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "No se puede finalizar el reclamo con ese id");
+	            }
+        		} else {
+    	    			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "El Pedido no posee reclamos.");
+        	    }
+        } else {
+	    		throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "Pedido inexistente");
+	    }
         	
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dto.getId().toString()))

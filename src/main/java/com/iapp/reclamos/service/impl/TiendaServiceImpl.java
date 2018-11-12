@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.iapp.reclamos.domain.Pedido;
@@ -111,19 +112,28 @@ public class TiendaServiceImpl implements TiendaService {
 
 	@Override
 	public void notificarTienda(ReclamoDTO reclamoDTO) {
-		
 		Reclamo reclamo = reclamoMapper.toEntity(reclamoDTO);
 		Pedido pedido = reclamo.getPedido();
-		Optional<Tienda> tienda = tiendaRepository.findTiendaByPedido(pedido.getId());
-		
-		try {
-			URI url = new URI(tienda.get().getUrl() + "/claim");
-			ReporteReclamoDTO dto = new ReporteReclamoDTO(reclamo.getId(), reclamo.getObservacion(), reclamo.getEstado().name());
-			
-			restTemplate.postForObject(url, dto, ReporteReclamoDTO.class);
-			
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+		if(pedido != null) {
+			Optional<Tienda> tienda = tiendaRepository.findTiendaByPedido(pedido.getId());
+			if(tienda.isPresent()) {
+				String url = tienda.get().getUrl() + "/claim";
+				try {
+					URI uri = new URI(url);
+					ReporteReclamoDTO dto = new ReporteReclamoDTO(reclamo.getId(), reclamo.getObservacion(), reclamo.getEstado().name());
+					
+					restTemplate.postForObject(uri, dto, ReporteReclamoDTO.class);
+					
+				} catch (RestClientException e) {
+					log.error("Error al conectar con el servidor de Tienda: " + url);
+				} catch (URISyntaxException e) {
+					log.error("Error de sintaxis al intentar armar la url de Tienda: " + url);
+				}
+			}else {
+				log.error("No existe tienda para el pedido numero " + reclamoDTO.getPedidoId());
+			}
+		}else {
+			log.error("No existe pedido para el reclamo numero " + reclamoDTO.getId());
 		}
 	}
 	
@@ -132,15 +142,25 @@ public class TiendaServiceImpl implements TiendaService {
 		
 		Reclamo reclamo = reclamoMapper.toEntity(reclamoDTO);
 		Pedido pedido = reclamo.getPedido();
-		Optional<Tienda> tienda = tiendaRepository.findTiendaByPedido(pedido.getId());
-		
-		try {
-			URI url = new URI(tienda.get().getUrl() + "/logistica/" + pedido.getId() + "/complain");
-			
-			restTemplate.patchForObject(url, null, String.class);
-			
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+		if(pedido != null) {
+			Optional<Tienda> tienda = tiendaRepository.findTiendaByPedido(pedido.getId());
+			if(tienda.isPresent()) {
+				String url = tienda.get().getUrl() + "/logistica/" + pedido.getId() + "/complain";
+				try {
+					URI uri = new URI(url);
+					
+					restTemplate.patchForObject(uri, null, String.class);
+					
+				} catch (RestClientException e) {
+					log.error("Error al conectar con el servidor de Logistica: " + url);
+				} catch (URISyntaxException e) {
+					log.error("Error de sintaxis al intentar armar la url de Logistica: " + url);
+				}
+			}else {
+				log.error("No existe tienda para el pedido numero " + reclamoDTO.getPedidoId());
+			}
+		}else {
+			log.error("No existe pedido para el reclamo numero " + reclamoDTO.getId());
 		}
 	}
 }

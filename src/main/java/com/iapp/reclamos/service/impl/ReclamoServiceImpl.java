@@ -1,7 +1,5 @@
 package com.iapp.reclamos.service.impl;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -13,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.iapp.reclamos.domain.Reclamo;
 import com.iapp.reclamos.domain.enumeration.Estado;
-import com.iapp.reclamos.repository.ParametroRepository;
 import com.iapp.reclamos.repository.ReclamoRepository;
 import com.iapp.reclamos.service.MailService;
 import com.iapp.reclamos.service.ReclamoService;
@@ -37,13 +34,10 @@ public class ReclamoServiceImpl implements ReclamoService {
     
     private final TiendaService tiendaService;
     
-    private final ParametroRepository parametroRepository;
-
-    public ReclamoServiceImpl(ReclamoRepository reclamoRepository, ReclamoMapper reclamoMapper, MailService mailService, ParametroRepository parametroRepository, TiendaService tiendaService) {
+    public ReclamoServiceImpl(ReclamoRepository reclamoRepository, ReclamoMapper reclamoMapper, MailService mailService, TiendaService tiendaService) {
         this.reclamoRepository = reclamoRepository;
         this.reclamoMapper = reclamoMapper;
         this.mailService = mailService;
-        this.parametroRepository = parametroRepository;
         this.tiendaService = tiendaService;
     }
 
@@ -114,9 +108,10 @@ public class ReclamoServiceImpl implements ReclamoService {
         Reclamo reclamo = reclamoMapper.toEntity(reclamoDTO);
         reclamo.setEstado(Estado.FINALIZADO);
         reclamo = reclamoRepository.save(reclamo);
+        reclamoDTO = reclamoMapper.toDto(reclamo);
         mailService.sendMailReclamoFinalizado(reclamoDTO);
-//        tiendaService.notificarTienda(reclamoDTO);
-        return reclamoMapper.toDto(reclamo);
+        tiendaService.notificarTienda(reclamoDTO);
+        return reclamoDTO;
     }
     
     /**
@@ -129,17 +124,19 @@ public class ReclamoServiceImpl implements ReclamoService {
 	public ReclamoDTO createReclamo(ReclamoDTO reclamoDTO) {
 		log.debug("Request to save Reclamo : {}", reclamoDTO);
 		Reclamo reclamo = reclamoMapper.toEntity(reclamoDTO);
-		
 		if (reclamoDTO.getNotificaLogistica()) {
 			reclamo.setEstado(Estado.PENDIENTE_LOGISTICA);
-
-//			tiendaService.notificarLogistica(reclamoDTO);
 		} else {
 			reclamo.setEstado(Estado.PENDIENTE);
 		}
-//		tiendaService.notificarTienda(reclamoDTO);
 
 		reclamo = reclamoRepository.save(reclamo);
-		return reclamoMapper.toDto(reclamo);
+		reclamoDTO = reclamoMapper.toDto(reclamo);
+		
+		if (reclamoDTO.getNotificaLogistica()) 
+			tiendaService.notificarLogistica(reclamoDTO);
+		
+		tiendaService.notificarTienda(reclamoDTO);
+		return reclamoDTO;
 	}
 }
