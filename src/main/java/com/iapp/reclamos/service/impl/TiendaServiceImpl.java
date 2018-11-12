@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +118,9 @@ public class TiendaServiceImpl implements TiendaService {
 		if(pedido != null) {
 			Optional<Tienda> tienda = tiendaRepository.findTiendaByPedido(pedido.getId());
 			if(tienda.isPresent()) {
-				String url = tienda.get().getUrl() + "/claim";
+				String url = tienda.get().getUrl();
+				url = url.replaceAll("\\{id\\}", pedido.getId().toString());
+				log.info("********************" + url);
 				try {
 					URI uri = new URI(url);
 					ReporteReclamoDTO dto = new ReporteReclamoDTO(reclamo.getId(), reclamo.getObservacion(), reclamo.getEstado().name());
@@ -145,12 +148,12 @@ public class TiendaServiceImpl implements TiendaService {
 		if(pedido != null) {
 			Optional<Tienda> tienda = tiendaRepository.findTiendaByPedido(pedido.getId());
 			if(tienda.isPresent()) {
-				String url = tienda.get().getUrl() + "/logistica/" + pedido.getId() + "/complain";
+				String url = tienda.get().getUrlLogistica();
+				url = url.replaceAll("\\{id\\}", pedido.getId().toString());
+				log.info("********************" + url);
 				try {
 					URI uri = new URI(url);
-					
-					restTemplate.patchForObject(uri, null, String.class);
-					
+					restTemplate.postForObject(uri, null, String.class);
 				} catch (RestClientException e) {
 					log.error("Error al conectar con el servidor de Logistica: " + url);
 				} catch (URISyntaxException e) {

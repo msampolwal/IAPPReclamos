@@ -124,7 +124,8 @@ public class ReclamoServiceImpl implements ReclamoService {
 	public ReclamoDTO createReclamo(ReclamoDTO reclamoDTO) {
 		log.debug("Request to save Reclamo : {}", reclamoDTO);
 		Reclamo reclamo = reclamoMapper.toEntity(reclamoDTO);
-		if (reclamoDTO.getNotificaLogistica()) {
+		boolean logistica = reclamoDTO.getNotificaLogistica();
+		if (logistica) {
 			reclamo.setEstado(Estado.PENDIENTE_LOGISTICA);
 		} else {
 			reclamo.setEstado(Estado.PENDIENTE);
@@ -133,7 +134,7 @@ public class ReclamoServiceImpl implements ReclamoService {
 		reclamo = reclamoRepository.save(reclamo);
 		reclamoDTO = reclamoMapper.toDto(reclamo);
 		
-		if (reclamoDTO.getNotificaLogistica()) 
+		if (logistica) 
 			tiendaService.notificarLogistica(reclamoDTO);
 		
 		tiendaService.notificarTienda(reclamoDTO);

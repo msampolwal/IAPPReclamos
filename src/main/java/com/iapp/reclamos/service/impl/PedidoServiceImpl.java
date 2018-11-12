@@ -3,7 +3,6 @@ package com.iapp.reclamos.service.impl;
 import java.io.IOException;
 import java.io.Reader;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -116,7 +115,7 @@ public class PedidoServiceImpl implements PedidoService {
 	        String[] line;
 	        while ((line = reader.readNext()) != null) {
 	        		try {
-	        			PedidoDTO pedidoDTO = arrayToPedidoDTO(idTienda, fechaPedidos, line);
+	        			PedidoDTO pedidoDTO = arrayToPedidoDTO(line);
 	        			Pedido pedido = pedidoMapper.toEntity(pedidoDTO);
 	        			System.out.println(pedido.toString());
 	        	        pedido = pedidoRepository.save(pedido);
@@ -129,9 +128,10 @@ public class PedidoServiceImpl implements PedidoService {
 	    }
 	}
 
-    private PedidoDTO arrayToPedidoDTO(Long idTienda, LocalDate fechaPedidos, String[] pedido) throws Exception {
+    private PedidoDTO arrayToPedidoDTO(String[] pedido) throws Exception {
 		PedidoDTO pedidoDTO = new PedidoDTO();
-		pedidoDTO.setTiendaId(idTienda);
+		pedidoDTO.setTiendaId(1L);
+		pedidoDTO.setFechaEntrega(LocalDate.now());
 		if(StringUtils.isNotBlank(pedido[0])) {
 			pedidoDTO.setDescripcionProducto(pedido[0]);
 		}else {

@@ -3,11 +3,8 @@ package com.iapp.reclamos.config;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +28,7 @@ public class SchedulerConfiguration {
 	@Autowired
     private PedidoService pedidoService;
 
-	@Scheduled(fixedDelay = 10000)
+	@Scheduled(fixedDelay = 60000)
 	public void procesarArchivoTienda() {
 		log.info("******* Inicia tarea - Procesando archivos de Tienda *******");
 		Parametro ipFtp = parametroRepository.findByClave("ipFtp");
@@ -46,11 +43,11 @@ public class SchedulerConfiguration {
 			for (String nombre : Arrays.asList(ftpClient.getInstancia().listNames())) {
 				System.out.println("Se procesa Archivo: " + nombre);
 				Reader reader = new InputStreamReader(ftpClient.getInstancia().retrieveFileStream(nombre));
-				String[] nombreAr = StringUtils.split(StringUtils.replace(nombre,".csv",""), "_");
-				Long idTienda = Long.parseLong(nombreAr[0]);
-				LocalDate fechaPedidos = LocalDate.parse(nombreAr[1], DateTimeFormatter.ofPattern("yyyyMMdd"));
+//				String[] nombreAr = StringUtils.split(StringUtils.replace(nombre,".csv",""), "_");
+//				Long idTienda = Long.parseLong(nombreAr[0]);
+//				LocalDate fechaPedidos = LocalDate.parse(nombreAr[1], DateTimeFormatter.ofPattern("yyyyMMdd"));
 				
-				pedidoService.migrarPedidosDesdeCSV(idTienda, fechaPedidos, reader);
+				pedidoService.migrarPedidosDesdeCSV(null, null, reader);
 				
 				reader.close();
 				ftpClient.getInstancia().deleteFile(nombre);
