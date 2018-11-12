@@ -115,7 +115,7 @@ public class ReclamoServiceImpl implements ReclamoService {
         reclamo.setEstado(Estado.FINALIZADO);
         reclamo = reclamoRepository.save(reclamo);
         mailService.sendMailReclamoFinalizado(reclamoDTO);
-        tiendaService.notificarTienda(reclamoDTO);
+//        tiendaService.notificarTienda(reclamoDTO);
         return reclamoMapper.toDto(reclamo);
     }
     
@@ -130,22 +130,14 @@ public class ReclamoServiceImpl implements ReclamoService {
 		log.debug("Request to save Reclamo : {}", reclamoDTO);
 		Reclamo reclamo = reclamoMapper.toEntity(reclamoDTO);
 		
-		try {
-			
-			if (reclamoDTO.getNotificaLogistica()) {
-				reclamo.setEstado(Estado.PENDIENTE_LOGISTICA);
-				URI url = new URI(reclamo.getPedido().getTienda().getUrlLogistica() + "logistica/"
-						+ reclamoDTO.getPedidoId() + "/complain");
+		if (reclamoDTO.getNotificaLogistica()) {
+			reclamo.setEstado(Estado.PENDIENTE_LOGISTICA);
 
-				tiendaService.notificarLogistica(reclamoDTO);
-			} else {
-				reclamo.setEstado(Estado.PENDIENTE);
-			}
-			tiendaService.notificarTienda(reclamoDTO);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			tiendaService.notificarLogistica(reclamoDTO);
+		} else {
+			reclamo.setEstado(Estado.PENDIENTE);
 		}
+//		tiendaService.notificarTienda(reclamoDTO);
 
 		reclamo = reclamoRepository.save(reclamo);
 		return reclamoMapper.toDto(reclamo);

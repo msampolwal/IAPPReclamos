@@ -1,6 +1,7 @@
 package com.iapp.reclamos.service;
 
 import java.io.Reader;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,5 +56,5 @@ public interface PedidoService {
     /**
      * Migracion de CSV
      */
-    void migrarPedidosDesdeCSV(Reader reader);
+    void migrarPedidosDesdeCSV(Long idTienda, LocalDate fechaPedidos, Reader reader);
 }

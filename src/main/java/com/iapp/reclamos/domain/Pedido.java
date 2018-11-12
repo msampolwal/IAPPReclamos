@@ -22,10 +22,9 @@ public class Pedido implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fecha_entrega")
+    @Column(name = "fecha_entrega", nullable=true)
     private LocalDate fechaEntrega;
 
     @Column(name = "monto_compra")

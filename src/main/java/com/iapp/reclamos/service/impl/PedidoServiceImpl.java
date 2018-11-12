@@ -109,17 +109,17 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoRepository.deleteById(id);
     }
     
-    public void migrarPedidosDesdeCSV(Reader fileReader) {
+    public void migrarPedidosDesdeCSV(Long idTienda, LocalDate fechaPedidos, Reader fileReader) {
 		CSVReader reader = null;
 	    try {
 	        reader = new CSVReader(fileReader);
 	        String[] line;
 	        while ((line = reader.readNext()) != null) {
 	        		try {
-	        			PedidoDTO pedidoDTO = arrayToPedidoDTO(line);
+	        			PedidoDTO pedidoDTO = arrayToPedidoDTO(idTienda, fechaPedidos, line);
 	        			Pedido pedido = pedidoMapper.toEntity(pedidoDTO);
 	        			System.out.println(pedido.toString());
-//	        	        pedido = pedidoRepository.save(pedido);
+	        	        pedido = pedidoRepository.save(pedido);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
@@ -129,11 +129,24 @@ public class PedidoServiceImpl implements PedidoService {
 	    }
 	}
 
-    private PedidoDTO arrayToPedidoDTO(String[] pedido) throws Exception {
+    private PedidoDTO arrayToPedidoDTO(Long idTienda, LocalDate fechaPedidos, String[] pedido) throws Exception {
 		PedidoDTO pedidoDTO = new PedidoDTO();
+		pedidoDTO.setTiendaId(idTienda);
 		if(StringUtils.isNotBlank(pedido[0])) {
+			pedidoDTO.setDescripcionProducto(pedido[0]);
+		}else {
+			throw new Exception("La descripcion del producto no puede ser nula");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[1])) {
+			pedidoDTO.setDniCliente(pedido[1]);
+		}else {
+			throw new Exception("El dni del cliente no puede ser nulo");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[2])) {
 			try {
-				pedidoDTO.setId(Long.parseLong(pedido[0]));
+				pedidoDTO.setId(Long.parseLong(pedido[2]));
 			} catch (Exception e) {
 				throw new Exception("El id Pedido debe ser de tipo entero");
 			}
@@ -141,19 +154,21 @@ public class PedidoServiceImpl implements PedidoService {
 			throw new Exception("El id Pedido no puede ser nulo");
 		}
 		
-		if(StringUtils.isNotBlank(pedido[1])) {
-			try {
-				pedidoDTO.setFechaEntrega(LocalDate.parse(pedido[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			} catch (Exception e) {
-				throw new Exception("La fecha de Entrega debe ser de tipo string con formato yyyy-mm-dd ");
-			}
+		if(StringUtils.isNotBlank(pedido[3])) {
+			pedidoDTO.setIdProducto(pedido[3]);
 		}else {
-			throw new Exception("La fecha de Entrega no puede ser nula");
+			throw new Exception("El id del producto no puede ser nulo");
 		}
 		
-		if(StringUtils.isNotBlank(pedido[2])) {
+		if(StringUtils.isNotBlank(pedido[4])) {
+			pedidoDTO.setMailCliente(pedido[4]);
+		}else {
+			throw new Exception("El email del cliente no puede ser nulo");
+		}
+		
+		if(StringUtils.isNotBlank(pedido[5])) {
 			try {
-				pedidoDTO.setMontoCompra(Float.parseFloat(pedido[2]));
+				pedidoDTO.setMontoCompra(Float.parseFloat(pedido[5]));
 			} catch (Exception e) {
 				throw new Exception("El monto de la compra debe tener formato decimal");
 			}
@@ -161,31 +176,21 @@ public class PedidoServiceImpl implements PedidoService {
 			throw new Exception("El monto de la compra no puede ser nulo");
 		}
 		
-		if(StringUtils.isNotBlank(pedido[3])) {
-			pedidoDTO.setDniCliente(pedido[3]);
-		}else {
-			throw new Exception("El dni del cliente no puede ser nulo");
-		}
-		
-		if(StringUtils.isNotBlank(pedido[4])) {
-			pedidoDTO.setNombreCliente(pedido[4]);
+		if(StringUtils.isNotBlank(pedido[6])) {
+			pedidoDTO.setNombreCliente(pedido[6]);
 		}else {
 			throw new Exception("El nombre del cliente no puede ser nulo");
 		}
 		
-		if(StringUtils.isNotBlank(pedido[5])) {
-			pedidoDTO.setMailCliente(pedido[5]);
-		}else {
-			throw new Exception("El email del cliente no puede ser nulo");
-		}
-		
-		if(StringUtils.isNotBlank(pedido[6])) {
-			pedidoDTO.setIdProducto(pedido[6]);
-		}
-		
-		if(StringUtils.isNotBlank(pedido[7])) {
-			pedidoDTO.setDescripcionProducto(pedido[7]);
-		}
+//		if(StringUtils.isNotBlank(pedido[1])) {
+//		try {
+//			pedidoDTO.setFechaEntrega(LocalDate.parse(pedido[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//		} catch (Exception e) {
+//			throw new Exception("La fecha de Entrega debe ser de tipo string con formato yyyy-mm-dd ");
+//		}
+//	}else {
+//		throw new Exception("La fecha de Entrega no puede ser nula");
+//	}
 		
 		return pedidoDTO;
 	}

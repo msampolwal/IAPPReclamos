@@ -1,31 +1,46 @@
 package com.iapp.reclamos.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.List;
+import java.util.Optional;
 
-import com.iapp.reclamos.domain.PersistentToken;
-import com.iapp.reclamos.repository.PersistentTokenRepository;
-import com.iapp.reclamos.domain.User;
-import com.iapp.reclamos.repository.UserRepository;
-import com.iapp.reclamos.security.SecurityUtils;
-import com.iapp.reclamos.service.MailService;
-import com.iapp.reclamos.service.UserService;
-import com.iapp.reclamos.service.dto.UserDTO;
-import com.iapp.reclamos.web.rest.errors.*;
-import com.iapp.reclamos.web.rest.vm.KeyAndPasswordVM;
-import com.iapp.reclamos.web.rest.vm.ManagedUserVM;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import com.codahale.metrics.annotation.Timed;
+import com.iapp.reclamos.domain.PersistentToken;
+import com.iapp.reclamos.domain.User;
+import com.iapp.reclamos.repository.PersistentTokenRepository;
+import com.iapp.reclamos.repository.UserRepository;
+import com.iapp.reclamos.security.SecurityUtils;
+import com.iapp.reclamos.service.MailService;
+import com.iapp.reclamos.service.UserService;
 import com.iapp.reclamos.service.dto.PasswordChangeDTO;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
+import com.iapp.reclamos.service.dto.UserDTO;
+import com.iapp.reclamos.web.rest.errors.EmailAlreadyUsedException;
+import com.iapp.reclamos.web.rest.errors.EmailNotFoundException;
+import com.iapp.reclamos.web.rest.errors.InternalServerErrorException;
+import com.iapp.reclamos.web.rest.errors.InvalidPasswordException;
+import com.iapp.reclamos.web.rest.errors.LoginAlreadyUsedException;
+import com.iapp.reclamos.web.rest.vm.KeyAndPasswordVM;
+import com.iapp.reclamos.web.rest.vm.ManagedUserVM;
 
 /**
  * REST controller for managing the current user's account.
@@ -237,5 +252,11 @@ public class AccountResource {
         return !StringUtils.isEmpty(password) &&
             password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
             password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
+    }
+    
+    @GetMapping(path = "/public/csrf-token")
+    public @ResponseBody String getCsrfToken(HttpServletRequest request) {
+        CsrfToken token = (CsrfToken)request.getAttribute(CsrfToken.class.getName());
+        return token.getToken();
     }
 }
