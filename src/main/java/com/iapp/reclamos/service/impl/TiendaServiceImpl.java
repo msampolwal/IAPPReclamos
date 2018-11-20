@@ -123,7 +123,7 @@ public class TiendaServiceImpl implements TiendaService {
 				log.info("********************" + url);
 				try {
 					URI uri = new URI(url);
-					ReporteReclamoDTO dto = new ReporteReclamoDTO(reclamo.getId(), reclamo.getObservacion(), reclamo.getEstado().name());
+					ReporteReclamoDTO dto = new ReporteReclamoDTO(reclamo.getPedido().getId(), reclamo.getObservacion(), reclamo.getEstado().name());
 					
 					restTemplate.postForObject(uri, dto, ReporteReclamoDTO.class);
 					

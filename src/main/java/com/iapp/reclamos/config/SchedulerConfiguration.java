@@ -28,7 +28,7 @@ public class SchedulerConfiguration {
 	@Autowired
     private PedidoService pedidoService;
 
-	@Scheduled(fixedDelay = 60000)
+	@Scheduled(fixedDelay = 10000)
 	public void procesarArchivoTienda() {
 		log.info("******* Inicia tarea - Procesando archivos de Tienda *******");
 		Parametro ipFtp = parametroRepository.findByClave("ipFtp");

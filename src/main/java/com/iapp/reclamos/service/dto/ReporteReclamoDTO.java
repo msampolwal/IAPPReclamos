@@ -10,6 +10,9 @@ public class ReporteReclamoDTO implements Serializable {
 
 	private String estado;
 	
+	public ReporteReclamoDTO() {
+	}
+	
 	public ReporteReclamoDTO(Long idPedido, String descripcion, String estado) {
 		super();
 		this.idPedido = idPedido;
