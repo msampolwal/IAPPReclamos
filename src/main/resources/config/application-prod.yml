@@ -27,9 +27,9 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/IAPPReclamos?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password: hsq00mmvh
+        url: jdbc:mysql://192.168.1.233:3306/IAPPReclamos?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: gbeltra
+        password: meolvide
         hikari:
             data-source-properties:
                 cachePrepStmts: true

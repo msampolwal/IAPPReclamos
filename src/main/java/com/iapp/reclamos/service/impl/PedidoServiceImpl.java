@@ -3,6 +3,7 @@ package com.iapp.reclamos.service.impl;
 import java.io.IOException;
 import java.io.Reader;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -132,15 +133,27 @@ public class PedidoServiceImpl implements PedidoService {
 		PedidoDTO pedidoDTO = new PedidoDTO();
 		pedidoDTO.setTiendaId(1L);
 		pedidoDTO.setFechaEntrega(LocalDate.now());
+		String datosEntrada = "Datos: ";
+		for (int i = 0; i < pedido.length; i++) {
+			datosEntrada += " " + pedido[i];
+		}
+		System.out.println(datosEntrada);
+		if(pedido.length != 7) {
+			System.out.println("La cantidad de columnas del CSV es incorrecta. Cantidad de columnas enviadas: " + pedido.length);
+			throw new Exception("La cantidad de columnas del CSV es incorrecta");
+		}
+			
 		if(StringUtils.isNotBlank(pedido[0])) {
 			pedidoDTO.setDescripcionProducto(pedido[0]);
 		}else {
+			System.out.println("La descripcion del producto no puede ser nula");
 			throw new Exception("La descripcion del producto no puede ser nula");
 		}
 		
 		if(StringUtils.isNotBlank(pedido[1])) {
 			pedidoDTO.setDniCliente(pedido[1]);
 		}else {
+			System.out.println("El dni del cliente no puede ser nulo");
 			throw new Exception("El dni del cliente no puede ser nulo");
 		}
 		
@@ -148,21 +161,25 @@ public class PedidoServiceImpl implements PedidoService {
 			try {
 				pedidoDTO.setId(Long.parseLong(pedido[2]));
 			} catch (Exception e) {
+				System.out.println("El id Pedido debe ser de tipo entero");
 				throw new Exception("El id Pedido debe ser de tipo entero");
 			}
 		}else {
+			System.out.println("El id Pedido no puede ser nulo");
 			throw new Exception("El id Pedido no puede ser nulo");
 		}
 		
 		if(StringUtils.isNotBlank(pedido[3])) {
 			pedidoDTO.setIdProducto(pedido[3]);
 		}else {
+			System.out.println("El id del producto no puede ser nulo");
 			throw new Exception("El id del producto no puede ser nulo");
 		}
 		
 		if(StringUtils.isNotBlank(pedido[4])) {
 			pedidoDTO.setMailCliente(pedido[4]);
 		}else {
+			System.out.println("El email del cliente no puede ser nulo");
 			throw new Exception("El email del cliente no puede ser nulo");
 		}
 		
@@ -170,27 +187,20 @@ public class PedidoServiceImpl implements PedidoService {
 			try {
 				pedidoDTO.setMontoCompra(Float.parseFloat(pedido[5]));
 			} catch (Exception e) {
+				System.out.println("El monto de la compra debe tener formato decimal");
 				throw new Exception("El monto de la compra debe tener formato decimal");
 			}
 		}else {
+			System.out.println("El monto de la compra no puede ser nulo");
 			throw new Exception("El monto de la compra no puede ser nulo");
 		}
 		
 		if(StringUtils.isNotBlank(pedido[6])) {
 			pedidoDTO.setNombreCliente(pedido[6]);
 		}else {
+			System.out.println("El nombre del cliente no puede ser nulo");
 			throw new Exception("El nombre del cliente no puede ser nulo");
 		}
-		
-//		if(StringUtils.isNotBlank(pedido[1])) {
-//		try {
-//			pedidoDTO.setFechaEntrega(LocalDate.parse(pedido[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-//		} catch (Exception e) {
-//			throw new Exception("La fecha de Entrega debe ser de tipo string con formato yyyy-mm-dd ");
-//		}
-//	}else {
-//		throw new Exception("La fecha de Entrega no puede ser nula");
-//	}
 		
 		return pedidoDTO;
 	}

@@ -1,1 +1,0 @@
-web: java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=prod,heroku -Dserver.port=$PORT -jar build/libs/*.jar

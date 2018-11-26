@@ -35,6 +35,9 @@ spring:
         url: jdbc:mysql://localhost:3306/IAPPReclamos?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
         password: hsq00mmvh
+#        url: jdbc:mysql://debianprueba.ddns.net:3306/iappreclamos?useUnicode=true&characterEncoding=utf8&useSSL=false
+#        username: gbeltra
+#        password: meolvide
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -117,6 +120,7 @@ jhipster:
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: IAPPReclamos@localhost
         base-url: http://127.0.0.1:8080
+#        base-url: http://web7.ddns.net:8080/iappreclamos
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx:
             enabled: true
